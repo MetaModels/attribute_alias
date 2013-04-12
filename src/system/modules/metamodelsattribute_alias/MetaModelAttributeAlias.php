@@ -79,12 +79,16 @@ class MetaModelAttributeAlias extends MetaModelAttributeSimple
 		$strAlias  = standardize(implode('-', $arrAlias));
 
 		// we need to fetch the attribute values for all attribs in the alias_fields and update the database and the model accordingly.
-		if ($this->get('isunique') && $this->searchFor($strAlias))
+		if ($this->get('isunique'))
 		{
-			$intCount = 1;
 			// ensure uniqueness.
-			while (count($this->searchFor($strAlias . '-' . (++$intCount))) > 0){}
-			$strAlias = $strAlias . '-' . $intCount;
+			$strBaseAlias = $strAlias;
+			$arrIds = array($objItem->get('id'));
+			$intCount = 2;
+			while(array_diff($this->searchFor($strAlias), $arrIds))
+			{
+				$strAlias = $strBaseAlias . '-' . $intCount++;
+			}
 		}
 
 		$this->setDataFor(array($objItem->get('id') => $strAlias));
