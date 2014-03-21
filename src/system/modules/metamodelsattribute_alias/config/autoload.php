@@ -21,8 +21,11 @@
  */
 ClassLoader::addClasses(array
 (
-	'MetaModelAttributeAlias'              => 'system/modules/metamodelsattribute_alias/MetaModelAttributeAlias.php',
-	'TableMetaModelsAttributeAlias'        => 'system/modules/metamodelsattribute_alias/TableMetaModelsAttributeAlias.php',
+	'MetaModels\Attribute\Alias\Alias'     => 'system/modules/metamodelsattribute_alias/MetaModels/Attribute/Alias/Alias.php',
+	'MetaModels\Dca\AttributeAlias'        => 'system/modules/metamodelsattribute_alias/MetaModels/Dca/AttributeAlias.php',
+
+	'MetaModelAttributeAlias'              => 'system/modules/metamodelsattribute_alias/deprecated/MetaModelAttributeAlias.php',
+	'TableMetaModelsAttributeAlias'        => 'system/modules/metamodelsattribute_alias/deprecated/TableMetaModelsAttributeAlias.php',
 ));
 
 

@@ -15,6 +15,11 @@
  * @filesource
  */
 
+namespace MetaModels\Attribute\Alias;
+
+use MetaModels\Attribute\BaseSimple;
+use MetaModels\Helper\ContaoController;
+
 /**
  * This is the MetaModelAttribute class for handling text fields.
  *
@@ -22,7 +27,7 @@
  * @subpackage AttributeAlias
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  */
-class MetaModelAttributeAlias extends MetaModelAttributeSimple
+class Alias extends BaseSimple
 {
 
 	public function getSQLDataType()
@@ -55,13 +60,13 @@ class MetaModelAttributeAlias extends MetaModelAttributeSimple
 		{
 			$arrFieldDef['eval']['mandatory'] = false;
 		}
-		
+
 		// If "force_alias" is ture set alwaysSave to true.
 		if ($this->get('force_alias'))
 		{
 			$arrFieldDef['eval']['alwaysSave'] = true;
 		}
-		
+
 		return $arrFieldDef;
 	}
 
@@ -92,7 +97,7 @@ class MetaModelAttributeAlias extends MetaModelAttributeSimple
 		// Implode with '-', replace inserttags and strip HTML elements.
 		$strAlias  = standardize(
 			strip_tags(
-				MetaModelController::getInstance()->replaceInsertTags(implode('-', $arrAlias))
+				ContaoController::getInstance()->replaceInsertTags(implode('-', $arrAlias))
 			)
 		);
 
