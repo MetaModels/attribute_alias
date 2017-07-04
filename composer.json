@@ -35,7 +35,8 @@
     "php": ">=5.4",
     "contao/core": "^3.5.5",
     "contao-community-alliance/composer-plugin": "~2.0",
-    "metamodels/core": "~2.0",
+    "metamodels/core": "~2.0@alpha",
+    "contao-community-alliance/dc-general": "~2.0@beta",
     "menatwork/contao-multicolumnwizard": "~3.3"
   },
   "require-dev": {
@@ -69,7 +70,5 @@
       "dev-master": "2.0.x-dev",
       "dev-develop": "2.1.x-dev"
     }
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true
+  }
 }
