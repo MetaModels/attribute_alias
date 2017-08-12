@@ -74,14 +74,15 @@ class Alias extends BaseSimple
 
         $arrFieldDef['inputType'] = 'text';
 
-        // W do not need to set mandatory, as we will automatically update our value when isunique is given.
+        // We do not need to set mandatory, as we will automatically update our value when isunique is given.
         if ($this->get('isunique')) {
             $arrFieldDef['eval']['mandatory'] = false;
         }
 
-        // If "force_alias" is ture set alwaysSave to true.
+        // If "force_alias" is true set alwaysSave and readonly to true.
         if ($this->get('force_alias')) {
             $arrFieldDef['eval']['alwaysSave'] = true;
+            $arrFieldDef['eval']['readonly']   = true;
         }
 
         return $arrFieldDef;
