@@ -29,11 +29,7 @@ use ContaoCommunityAlliance\Contao\Bindings\Events\Controller\ReplaceInsertTagsE
 use MetaModels\Attribute\BaseSimple;
 
 /**
- * This is the MetaModelAttribute class for handling text fields.
- *
- * @package    MetaModels
- * @subpackage AttributeAlias
- * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
+ * This is the MetaModelAttribute class for handling the alias field.
  */
 class Alias extends BaseSimple
 {
@@ -60,7 +56,9 @@ class Alias extends BaseSimple
                 'alwaysSave',
                 'filterable',
                 'searchable',
-                'sortable'
+                'sortable',
+                'alias_prefix',
+                'alias_postfix'
             )
         );
     }
@@ -104,9 +102,18 @@ class Alias extends BaseSimple
         }
 
         $arrAlias = [];
+
+        if ($this->get('alias_prefix')) {
+            $arrAlias[] = $this->get('alias_prefix');
+        }
+
         foreach (deserialize($this->get('alias_fields')) as $strAttribute) {
             $arrValues  = $objItem->parseAttribute($strAttribute['field_attribute'], 'text', null);
             $arrAlias[] = $arrValues['text'];
+        }
+
+        if ($this->get('alias_postfix')) {
+            $arrAlias[] = $this->get('alias_postfix');
         }
 
         $dispatcher   = $this->getMetaModel()->getServiceContainer()->getEventDispatcher();

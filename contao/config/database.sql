@@ -14,4 +14,6 @@
 CREATE TABLE `tl_metamodel_attribute` (
   `alias_fields` blob NULL,
   `force_alias` char(1) NOT NULL default ''
+  `alias_prefix` varchar(255) NOT NULL default ''
+  `alias_postfix` varchar(255) NOT NULL default ''
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

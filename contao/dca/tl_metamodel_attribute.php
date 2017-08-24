@@ -1,31 +1,53 @@
 <?php
 
 /**
- * The MetaModels extension allows the creation of multiple collections of custom items,
- * each with its own unique set of selectable attributes, with attribute extendability.
- * The Front-End modules allow you to build powerful listing and filtering of the
- * data in each collection.
+ * This file is part of MetaModels/attribute_alias.
  *
- * PHP version 5
+ * (c) 2012-2017 The MetaModels team.
  *
- * @package     MetaModels
- * @subpackage  AttributeAlias
- * @author      Christian Schiffler <c.schiffler@cyberspectrum.de>
- * @author      Andreas Isaak <info@andreas-isaak.de>
- * @author      Stefan Heimes <stefan_heimes@hotmail.com>
- * @copyright   The MetaModels team.
- * @license     LGPL.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * This project is provided in good faith and hope to be usable by anyone.
+ *
+ * @package    MetaModels
+ * @subpackage AttributeAlias
+ * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
+ * @author     Andreas Isaak <info@andreas-isaak.de>
+ * @author     Stefan Heimes <stefan_heimes@hotmail.com>
+ * @author     Ingolf Steinhardt <info@e-spin.de>
+ * @copyright  2012-2017 The MetaModels team.
+ * @license    https://github.com/MetaModels/attribute_alias/blob/master/LICENSE LGPL-3.0
  * @filesource
- */
-
-/**
- * Table tl_metamodel_attribute
  */
 
 $GLOBALS['TL_DCA']['tl_metamodel_attribute']['metapalettes']['alias extends _simpleattribute_'] = array
 (
     '+advanced' => array('force_alias'),
-    '+display'  => array('alias_fields after description')
+    '+display'  => array('alias_prefix','alias_postfix','alias_fields after description')
+);
+
+$GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['alias_prefix'] = array
+(
+    'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['alias_prefix'],
+    'exclude'   => true,
+    'inputType' => 'text',
+    'eval'      => array
+    (
+        'rgxp'     => 'alpha',    
+        'tl_class' => 'clr w50'
+    ),
+);
+
+$GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['alias_postfix'] = array
+(
+    'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['alias_postfix'],
+    'exclude'   => true,
+    'inputType' => 'text',
+    'eval'      => array
+    (
+        'tl_class' => 'w50'
+    ),
 );
 
 $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['alias_fields'] = array
@@ -35,6 +57,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['alias_fields'] = array
     'inputType' => 'multiColumnWizard',
     'eval'      => array
     (
+        'tl_class' => 'clr',
         'columnFields' => array
         (
             'field_attribute' => array
