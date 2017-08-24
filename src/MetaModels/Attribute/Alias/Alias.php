@@ -17,6 +17,7 @@
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
  * @author     Oliver Hoff <oliver@hofff.com>
  * @author     Ingolf Steinhardt <info@e-spin.de>
+ * @author     Sven Baumann <baumann.sv@gmail.com>
  * @copyright  2012-2017 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_alias/blob/master/LICENSE LGPL-3.0
  * @filesource
@@ -27,6 +28,7 @@ namespace MetaModels\Attribute\Alias;
 use ContaoCommunityAlliance\Contao\Bindings\ContaoEvents;
 use ContaoCommunityAlliance\Contao\Bindings\Events\Controller\ReplaceInsertTagsEvent;
 use MetaModels\Attribute\BaseSimple;
+use MetaModels\IItem;
 
 /**
  * This is the MetaModelAttribute class for handling the alias field.
@@ -101,23 +103,8 @@ class Alias extends BaseSimple
             return;
         }
 
-        $arrAlias = [];
-
-        if ($this->get('alias_prefix')) {
-            $arrAlias[] = $this->get('alias_prefix');
-        }
-
-        foreach (deserialize($this->get('alias_fields')) as $strAttribute) {
-            $arrValues  = $objItem->parseAttribute($strAttribute['field_attribute'], 'text', null);
-            $arrAlias[] = $arrValues['text'];
-        }
-
-        if ($this->get('alias_postfix')) {
-            $arrAlias[] = $this->get('alias_postfix');
-        }
-
         $dispatcher   = $this->getMetaModel()->getServiceContainer()->getEventDispatcher();
-        $replaceEvent = new ReplaceInsertTagsEvent(implode('-', $arrAlias));
+        $replaceEvent = new ReplaceInsertTagsEvent($this->generateAlias($objItem));
         $dispatcher->dispatch(ContaoEvents::CONTROLLER_REPLACE_INSERT_TAGS, $replaceEvent);
 
         // Implode with '-', replace inserttags and strip HTML elements.
@@ -137,5 +124,32 @@ class Alias extends BaseSimple
 
         $this->setDataFor(array($objItem->get('id') => $strAlias));
         $objItem->set($this->getColName(), $strAlias);
+    }
+
+    /**
+     * Generate the alias.
+     *
+     * @param IItem $objItem The item.
+     *
+     * @return string
+     */
+    private function generateAlias(IItem $objItem)
+    {
+        $arrAlias = [];
+
+        if ($this->get('alias_prefix')) {
+            $arrAlias[] = $this->get('alias_prefix');
+        }
+
+        foreach (deserialize($this->get('alias_fields')) as $strAttribute) {
+            $arrValues  = $objItem->parseAttribute($strAttribute['field_attribute'], 'text', null);
+            $arrAlias[] = $arrValues['text'];
+        }
+
+        if ($this->get('alias_postfix')) {
+            $arrAlias[] = $this->get('alias_postfix');
+        }
+
+        return implode('-', $arrAlias);
     }
 }
