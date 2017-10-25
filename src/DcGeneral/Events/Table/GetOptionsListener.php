@@ -21,27 +21,40 @@
 
 namespace MetaModels\Attribute\Alias\DcGeneral\Events\Table;
 
-use ContaoCommunityAlliance\DcGeneral\Contao\View\Contao2BackendView\IdSerializer;
-use MenAtWork\MultiColumnWizard\Event\GetOptionsEvent;
-use MetaModels\DcGeneral\Events\BaseSubscriber;
+use ContaoCommunityAlliance\DcGeneral\Contao\RequestScopeDeterminator;
+use ContaoCommunityAlliance\DcGeneral\Data\ModelId;
+use MetaModels\IFactory;
+use MultiColumnWizard\Event\GetOptionsEvent;
 
 /**
  * Handle events for tl_metamodel_attribute.alias_fields.attr_id.
  */
-class Subscriber extends BaseSubscriber
+class GetOptionsListener
 {
     /**
-     * Register all listeners.
+     * Request scope determinator.
      *
-     * @return void
+     * @var RequestScopeDeterminator
      */
-    public function registerEventsInDispatcher()
+    private $scopeDeterminator;
+
+    /**
+     * Metamodels factory.
+     *
+     * @var IFactory
+     */
+    private $factory;
+
+    /**
+     * GetOptionsListener constructor.
+     *
+     * @param RequestScopeDeterminator $scopeDeterminator Request scope determinator.
+     * @param IFactory                 $factory           Metamodels factory.
+     */
+    public function __construct(RequestScopeDeterminator $scopeDeterminator, IFactory $factory)
     {
-        $this
-            ->addListener(
-                GetOptionsEvent::NAME,
-                array($this, 'getOptions')
-            );
+        $this->scopeDeterminator = $scopeDeterminator;
+        $this->factory           = $factory;
     }
 
     /**
@@ -53,6 +66,10 @@ class Subscriber extends BaseSubscriber
      */
     private function isEventForMe(GetOptionsEvent $event)
     {
+        if (!$this->scopeDeterminator->currentScopeIsBackend()) {
+            return false;
+        }
+
         $input = $event->getEnvironment()->getInputProvider();
         $type  = $event->getModel()->getProperty('type');
 
@@ -87,14 +104,13 @@ class Subscriber extends BaseSubscriber
         $model       = $event->getModel();
         $metaModelId = $model->getProperty('pid');
         if (!$metaModelId) {
-            $metaModelId = IdSerializer::fromSerialized(
+            $metaModelId = ModelId::fromSerialized(
                 $event->getEnvironment()->getInputProvider()->getValue('pid')
             )->getId();
         }
 
-        $factory       = $this->getServiceContainer()->getFactory();
-        $metaModelName = $factory->translateIdToMetaModelName($metaModelId);
-        $metaModel     = $factory->getMetaModel($metaModelName);
+        $metaModelName = $this->factory->translateIdToMetaModelName($metaModelId);
+        $metaModel     = $this->factory->getMetaModel($metaModelName);
 
         if (!$metaModel) {
             return;

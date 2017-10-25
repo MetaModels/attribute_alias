@@ -21,7 +21,9 @@
 namespace MetaModels\Test\Attribute\Alias\DependencyInjection;
 
 use MetaModels\Attribute\Alias\AttributeTypeFactory;
+use MetaModels\Attribute\Alias\DcGeneral\Events\Table\GetOptionsListener;
 use MetaModels\Attribute\Alias\DependencyInjection\MetaModelsAttributeAliasExtension;
+use MultiColumnWizard\Event\GetOptionsEvent;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -55,23 +57,90 @@ class MetaModelsAttributeAliasExtensionTest extends TestCase
         $container = $this->getMockBuilder(ContainerBuilder::class)->getMock();
 
         $container
-            ->expects($this->once())
+            ->expects($this->exactly(2))
             ->method('setDefinition')
-            ->with(
-                'metamodels.attribute_alias.factory',
-                $this->callback(
-                    function ($value) {
-                        /** @var Definition $value */
-                        $this->assertInstanceOf(Definition::class, $value);
-                        $this->assertEquals(AttributeTypeFactory::class, $value->getClass());
-                        $this->assertCount(1, $value->getTag('metamodels.attribute_factory'));
+            ->withConsecutive(
+                [
+                    'metamodels.attribute_alias.factory',
+                    $this->callback(
+                        function ($value) {
+                            /** @var Definition $value */
+                            $this->assertInstanceOf(Definition::class, $value);
+                            $this->assertEquals(AttributeTypeFactory::class, $value->getClass());
+                            $this->assertCount(1, $value->getTag('metamodels.attribute_factory'));
 
-                        return true;
-                    }
-                )
+                            return true;
+                        }
+                    ),
+                ],
+                [
+                    $this->anything(),
+                    $this->anything(),
+                ]
             );
 
         $extension = new MetaModelsAttributeAliasExtension();
         $extension->load([], $container);
+    }
+
+    /**
+    * Test that the event listener is registered.
+    *
+    * @return void
+    */
+    public function testEventListenersAreRegistered()
+    {
+        $container = $this->getMockBuilder(ContainerBuilder::class)->getMock();
+
+        $container
+            ->expects($this->exactly(2))
+            ->method('setDefinition')
+            ->withConsecutive(
+                [
+                    $this->anything(),
+                    $this->anything(),
+                ],
+                [
+                    'metamodels.attribute_alias.backend_listner.get_options',
+                    $this->callback(
+                        function ($value) {
+                            /** @var Definition $value */
+                            $this->assertInstanceOf(Definition::class, $value);
+                            $this->assertEquals(GetOptionsListener::class, $value->getClass());
+                            $this->assertCount(1, $value->getTag('kernel.event_listener'));
+                            $this->assertEventListener(
+                                $value,
+                                GetOptionsEvent::NAME,
+                                'getOptions'
+                            );
+
+                            return true;
+                        }
+                    )
+                ]
+            );
+
+        $extension = new MetaModelsAttributeAliasExtension();
+        $extension->load([], $container);
+    }
+
+    /**
+     * Assert that a definition is registered as event listener.
+     *
+     * @param Definition $definition The definition.
+     * @param string     $eventName  The event name.
+     * @param string     $methodName The method name.
+     *
+     * @return void
+     */
+    private function assertEventListener(Definition $definition, $eventName, $methodName)
+    {
+        $this->assertCount(1, $definition->getTag('kernel.event_listener'));
+        $this->assertArrayHasKey(0, $definition->getTag('kernel.event_listener'));
+        $this->assertArrayHasKey('event', $definition->getTag('kernel.event_listener')[0]);
+        $this->assertArrayHasKey('method', $definition->getTag('kernel.event_listener')[0]);
+
+        $this->assertEquals($eventName, $definition->getTag('kernel.event_listener')[0]['event']);
+        $this->assertEquals($methodName, $definition->getTag('kernel.event_listener')[0]['method']);
     }
 }

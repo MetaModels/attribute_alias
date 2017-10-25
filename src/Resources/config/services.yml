@@ -6,3 +6,11 @@ services:
             - '@metamodels.table_manipulator'
         tags:
           - { name: metamodels.attribute_factory }
+
+    metamodels.attribute_alias.backend_listner.get_options:
+        class: MetaModels\Attribute\Alias\DcGeneral\Events\Table\GetOptionsListener
+        arguments:
+          - '@cca.dc-general.scope-matcher'
+          - '@metamodels.factory'
+        tags:
+          - { name: kernel.event_listener, event: 'men-at-work.multi-column-wizard.get-options', method: getOptions }
