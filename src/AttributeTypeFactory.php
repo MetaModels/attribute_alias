@@ -23,13 +23,13 @@
 namespace MetaModels\Attribute\Alias;
 
 use Doctrine\DBAL\Connection;
-use MetaModels\Attribute\AbstractAttributeTypeFactory;
+use MetaModels\Attribute\AbstractSimpleAttributeTypeFactory;
 use MetaModels\Helper\TableManipulator;
 
 /**
  * Attribute type factory for select attributes.
  */
-class AttributeTypeFactory extends AbstractAttributeTypeFactory
+class AttributeTypeFactory extends AbstractSimpleAttributeTypeFactory
 {
     /**
      * {@inheritDoc}
