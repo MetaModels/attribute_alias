@@ -19,7 +19,7 @@
  * @filesource
  */
 
-namespace MetaModels\Attribute\Alias\Events\Table;
+namespace MetaModels\Attribute\Alias\DcGeneral\Events\Table;
 
 use ContaoCommunityAlliance\DcGeneral\Contao\View\Contao2BackendView\IdSerializer;
 use MenAtWork\MultiColumnWizard\Event\GetOptionsEvent;

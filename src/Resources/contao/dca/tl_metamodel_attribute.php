@@ -35,7 +35,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['alias_prefix'] = array
     'inputType' => 'text',
     'eval'      => array
     (
-        'rgxp'     => 'alpha',    
+        'rgxp'     => 'alpha',
         'tl_class' => 'clr w50'
     ),
 );
