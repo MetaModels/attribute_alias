@@ -52,7 +52,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "MetaModels\\Test\\Attribute\\Alias": "tests/Test"
+      "MetaModels\\Test\\Attribute\\Alias\\": "tests/Test"
     }
   },
   "extra": {
