@@ -15,6 +15,7 @@
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Andreas Isaak <info@andreas-isaak.de>
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
+ * @author     David Molineus <david.molineus@netzmacht.de>
  * @copyright  2012-2016 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_alias/blob/master/LICENSE LGPL-3.0
  * @filesource
