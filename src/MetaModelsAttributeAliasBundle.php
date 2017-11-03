@@ -1,7 +1,7 @@
 <?php
 
 /**
- * * This file is part of MetaModels/attribute_alias.
+ * This file is part of MetaModels/attribute_alias.
  *
  * (c) 2012-2017 The MetaModels team.
  *
@@ -18,7 +18,7 @@
  * @filesource
  */
 
-namespace MetaModels\Attribute\Alias;
+namespace MetaModels\AttributeAliasBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

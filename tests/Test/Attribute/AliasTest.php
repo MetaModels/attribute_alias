@@ -19,11 +19,12 @@
  * @filesource
  */
 
-namespace MetaModels\Test\Attribute\Alias;
+namespace MetaModels\AttributeAliasBundle\Test\Attribute;
 
 use Doctrine\DBAL\Connection;
-use MetaModels\Attribute\Alias\Alias;
+use MetaModels\AttributeAliasBundle\Attribute\Alias;
 use MetaModels\Helper\TableManipulator;
+use MetaModels\IMetaModel;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -98,6 +99,6 @@ class AliasTest extends TestCase
         $manipulator = $this->mockTableManipulator($connection);
 
         $text = new Alias($this->mockMetaModel('en', 'en'), [], $connection, $manipulator);
-        $this->assertInstanceOf('MetaModels\Attribute\Alias\Alias', $text);
+        $this->assertInstanceOf(Alias::class, $text);
     }
 }

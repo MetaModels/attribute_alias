@@ -19,11 +19,12 @@
  * @filesource
  */
 
-namespace MetaModels\Test\Attribute\Alias;
+namespace MetaModels\AttributeAliasBundle\Test\Attribute;
 
 use Doctrine\DBAL\Connection;
 use MetaModels\Attribute\IAttributeTypeFactory;
-use MetaModels\Attribute\Alias\AttributeTypeFactory;
+use MetaModels\AttributeAliasBundle\Attribute\Alias;
+use MetaModels\AttributeAliasBundle\Attribute\AttributeTypeFactory;
 use MetaModels\Helper\TableManipulator;
 use MetaModels\IMetaModel;
 use PHPUnit\Framework\TestCase;
@@ -130,7 +131,7 @@ class AliasAttributeTypeFactoryTest extends TestCase
         $check                 = $values;
         $check['alias_fields'] = unserialize($check['alias_fields']);
 
-        $this->assertInstanceOf('MetaModels\Attribute\Alias\Alias', $attribute);
+        $this->assertInstanceOf(Alias::class, $attribute);
 
         foreach ($check as $key => $value) {
             $this->assertEquals($value, $attribute->get($key), $key);

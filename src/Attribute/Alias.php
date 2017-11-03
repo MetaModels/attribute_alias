@@ -24,7 +24,7 @@
  * @filesource
  */
 
-namespace MetaModels\Attribute\Alias;
+namespace MetaModels\AttributeAliasBundle\Attribute;
 
 use ContaoCommunityAlliance\Contao\Bindings\ContaoEvents;
 use ContaoCommunityAlliance\Contao\Bindings\Events\Controller\ReplaceInsertTagsEvent;

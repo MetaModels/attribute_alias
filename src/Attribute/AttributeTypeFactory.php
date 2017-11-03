@@ -20,7 +20,7 @@
  * @filesource
  */
 
-namespace MetaModels\Attribute\Alias;
+namespace MetaModels\AttributeAliasBundle\Attribute;
 
 use Doctrine\DBAL\Connection;
 use MetaModels\Attribute\AbstractSimpleAttributeTypeFactory;
@@ -40,6 +40,6 @@ class AttributeTypeFactory extends AbstractSimpleAttributeTypeFactory
 
         $this->typeName  = 'alias';
         $this->typeIcon  = 'bundles/metamodelsattributealias/alias.png';
-        $this->typeClass = 'MetaModels\Attribute\Alias\Alias';
+        $this->typeClass = Alias::class;
     }
 }

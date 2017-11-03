@@ -47,16 +47,19 @@
   },
   "autoload": {
     "psr-4": {
-      "MetaModels\\Attribute\\Alias\\": "src"
-    }
+      "MetaModels\\AttributeAliasBundle\\": "src"
+    },
+    "files": [
+      "src/deprecated-autoload.php"
+    ]
   },
   "autoload-dev": {
     "psr-4": {
-      "MetaModels\\Test\\Attribute\\Alias\\": "tests/Test"
+      "MetaModels\\AttributeAliasBundle\\Test\\": "tests/Test"
     }
   },
   "extra": {
-    "contao-manager-plugin": "MetaModels\\Attribute\\Alias\\ContaoManager\\Plugin",
+    "contao-manager-plugin": "MetaModels\\AttributeAliasBundle\\ContaoManager\\Plugin",
     "contao": {
       "transifex": {
         "project": "metamodels",

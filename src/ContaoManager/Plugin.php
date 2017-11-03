@@ -1,7 +1,7 @@
 <?php
 
 /**
- * * This file is part of MetaModels/attribute_alias.
+ * This file is part of MetaModels/attribute_alias.
  *
  * (c) 2012-2017 The MetaModels team.
  *
@@ -18,12 +18,12 @@
  * @filesource
  */
 
-namespace MetaModels\Attribute\Alias\ContaoManager;
+namespace MetaModels\AttributeAliasBundle\ContaoManager;
 
 use Contao\ManagerPlugin\Bundle\BundlePluginInterface;
 use Contao\ManagerPlugin\Bundle\Config\BundleConfig;
 use Contao\ManagerPlugin\Bundle\Parser\ParserInterface;
-use MetaModels\Attribute\Alias\MetaModelsAttributeAliasBundle;
+use MetaModels\AttributeAliasBundle\MetaModelsAttributeAliasBundle;
 use MetaModels\CoreBundle\MetaModelsCoreBundle;
 
 /**

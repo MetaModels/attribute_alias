@@ -18,11 +18,11 @@
  * @filesource
  */
 
-namespace MetaModels\Test\Attribute\Alias\DependencyInjection;
+namespace MetaModels\AttributeAliasBundle\Test\DependencyInjection;
 
-use MetaModels\Attribute\Alias\AttributeTypeFactory;
-use MetaModels\Attribute\Alias\DcGeneral\Events\Table\GetOptionsListener;
-use MetaModels\Attribute\Alias\DependencyInjection\MetaModelsAttributeAliasExtension;
+use MetaModels\AttributeAliasBundle\Attribute\AttributeTypeFactory;
+use MetaModels\AttributeAliasBundle\EventListener\GetOptionsListener;
+use MetaModels\AttributeAliasBundle\DependencyInjection\MetaModelsAttributeAliasExtension;
 use MultiColumnWizard\Event\GetOptionsEvent;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

@@ -18,12 +18,12 @@
  * @filesource
  */
 
-namespace MetaModels\Test\Attribute\Alias\ContaoManager;
+namespace MetaModels\AttributeAliasBundle\Test\ContaoManager;
 
 use Contao\ManagerPlugin\Bundle\BundlePluginInterface;
 use Contao\ManagerPlugin\Bundle\Config\BundleConfig;
 use Contao\ManagerPlugin\Bundle\Parser\ParserInterface;
-use MetaModels\Attribute\Alias\ContaoManager\Plugin;
+use MetaModels\AttributeAliasBundle\ContaoManager\Plugin;
 use MetaModels\CoreBundle\MetaModelsCoreBundle;
 use PHPUnit\Framework\TestCase;
 

@@ -1,6 +1,6 @@
 services:
     metamodels.attribute_alias.factory:
-        class: MetaModels\Attribute\Alias\AttributeTypeFactory
+        class: MetaModels\AttributeAliasBundle\Attribute\AttributeTypeFactory
         arguments:
             - '@database_connection'
             - '@metamodels.table_manipulator'
@@ -8,7 +8,7 @@ services:
           - { name: metamodels.attribute_factory }
 
     metamodels.attribute_alias.backend_listner.get_options:
-        class: MetaModels\Attribute\Alias\DcGeneral\Events\Table\GetOptionsListener
+        class: MetaModels\AttributeAliasBundle\EventListener\GetOptionsListener
         arguments:
           - '@cca.dc-general.scope-matcher'
           - '@metamodels.factory'
