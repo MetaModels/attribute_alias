@@ -21,11 +21,13 @@
 namespace MetaModels\Test\Attribute\Alias;
 
 use MetaModels\Attribute\Alias\Alias;
+use MetaModels\IMetaModel;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests to test class Alias.
  */
-class AliasTest extends \PHPUnit_Framework_TestCase
+class AliasTest extends TestCase
 {
     /**
      * Mock a MetaModel.
@@ -37,11 +39,7 @@ class AliasTest extends \PHPUnit_Framework_TestCase
      */
     protected function mockMetaModel($language, $fallbackLanguage)
     {
-        $metaModel = $this->getMock(
-            'MetaModels\MetaModel',
-            array(),
-            array(array())
-        );
+        $metaModel = $this->getMockForAbstractClass('MetaModels\IMetaModel');
 
         $metaModel
             ->expects($this->any())
