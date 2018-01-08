@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_alias.
  *
- * (c) 2012-2017 The MetaModels team.
+ * (c) 2012-2018 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -19,7 +19,7 @@
  * @author     Ingolf Steinhardt <info@e-spin.de>
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2012-2017 The MetaModels team.
+ * @copyright  2012-2018 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_alias/blob/master/LICENSE LGPL-3.0
  * @filesource
  */
@@ -143,8 +143,13 @@ class Alias extends BaseSimple
         }
 
         foreach (deserialize($this->get('alias_fields')) as $strAttribute) {
-            $arrValues  = $objItem->parseAttribute($strAttribute['field_attribute'], 'text', null);
-            $arrAlias[] = $arrValues['text'];
+            if ($this->isMetaField($strAttribute['field_attribute'])) {
+                $strField   = $strAttribute['field_attribute'];
+                $arrAlias[] = $objItem->get($strField);
+            } else {
+                $arrValues  = $objItem->parseAttribute($strAttribute['field_attribute'], 'text', null);
+                $arrAlias[] = $arrValues['text'];
+            }
         }
 
         if ($this->get('alias_postfix')) {
@@ -152,5 +157,36 @@ class Alias extends BaseSimple
         }
 
         return implode('-', $arrAlias);
+    }
+
+    /**
+     * Check if we have a meta field from metamodels.
+     *
+     * @param string $strField The selected value.
+     *
+     * @return boolean True => Yes we have | False => nope.
+     */
+    protected function isMetaField($strField)
+    {
+        $strField = trim($strField);
+
+        if (in_array($strField, $this->getMetaModelsSystemColumns())) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns the global MetaModels System Columns (replacement for super global access).
+     *
+     * @return mixed Global MetaModels System Columns
+     *
+     * @SuppressWarnings(PHPMD.Superglobals)
+     * @SuppressWarnings(PHPMD.CamelCaseVariableName)
+     */
+    protected function getMetaModelsSystemColumns()
+    {
+        return $GLOBALS['METAMODELS_SYSTEM_COLUMNS'];
     }
 }

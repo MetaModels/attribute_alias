@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_alias.
  *
- * (c) 2012-2017 The MetaModels team.
+ * (c) 2012-2018 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,7 +17,7 @@
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
  * @author     Ingolf Steinhardt <info@e-spin.de>
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2012-2017 The MetaModels team.
+ * @copyright  2012-2018 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_alias/blob/master/LICENSE LGPL-3.0
  * @filesource
  */
@@ -66,6 +66,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['alias_fields'] = array
                 'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['field_attribute'],
                 'exclude'   => true,
                 'inputType' => 'select',
+                'reference' => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['select_values'],
                 'eval'      => array
                 (
                     'style'  => 'width:600px',
