@@ -22,6 +22,11 @@
  */
 
 /**
+ * Legends
+ */
+$GLOBALS['TL_LANG']['tl_metamodel_attribute']['display_legend'] = 'Display settings';
+
+/**
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['typeOptions']['alias'] = 'Alias';
