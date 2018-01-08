@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_alias.
  *
- * (c) 2012-2016 The MetaModels team.
+ * (c) 2012-2018 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,7 +13,8 @@
  * @package    MetaModels
  * @subpackage AttributeAlias
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
- * @copyright  2012-2016 The MetaModels team.
+ * @author     Ingolf Steinhardt <info@e-spin.de>
+ * @copyright  2012-2018 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_alias/blob/master/LICENSE LGPL-3.0
  * @filesource
  */
@@ -101,13 +102,16 @@ class Subscriber extends BaseSubscriber
 
         $result = array();
 
+        // Add meta fields.
+        $result['meta'] = self::getMetaModelsSystemColumns();
+
         // Fetch all attributes except for the current attribute.
         foreach ($metaModel->getAttributes() as $attribute) {
             if ($attribute->get('id') === $model->getId()) {
                 continue;
             }
 
-            $result[$attribute->getColName()] = sprintf(
+            $result['attributes'][$attribute->getColName()] = sprintf(
                 '%s [%s]',
                 $attribute->getName(),
                 $attribute->get('type')
@@ -115,5 +119,18 @@ class Subscriber extends BaseSubscriber
         }
 
         $event->setOptions($result);
+    }
+
+    /**
+     * Returns the global MetaModels System Columns (replacement for super global access).
+     *
+     * @return mixed Global MetaModels System Columns
+     *
+     * @SuppressWarnings(PHPMD.Superglobals)
+     * @SuppressWarnings(PHPMD.CamelCaseVariableName)
+     */
+    protected static function getMetaModelsSystemColumns()
+    {
+        return $GLOBALS['METAMODELS_SYSTEM_COLUMNS'];
     }
 }
