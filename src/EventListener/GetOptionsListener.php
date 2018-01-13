@@ -15,6 +15,7 @@
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @author     Ingolf Steinhardt <info@e-spin.de>
+ * @author     Richard Henkenjohann <richardhenkenjohann@googlemail.com>
  * @copyright  2012-2018 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_alias/blob/master/LICENSE LGPL-3.0
  * @filesource
@@ -67,7 +68,7 @@ class GetOptionsListener
      */
     private function isEventForMe(GetOptionsEvent $event)
     {
-        if (!$this->scopeDeterminator->currentScopeIsBackend()) {
+        if (false === $this->scopeDeterminator->currentScopeIsBackend()) {
             return false;
         }
 
@@ -83,10 +84,10 @@ class GetOptionsListener
         }
 
         return
-            ($event->getEnvironment()->getDataDefinition()->getName() !== 'tl_metamodel_attribute')
-            || ($type !== 'alias')
-            || ($event->getPropertyName() !== 'alias_fields')
-            || ($event->getSubPropertyName() !== 'field_attribute');
+            ($event->getEnvironment()->getDataDefinition()->getName() === 'tl_metamodel_attribute')
+            && ($type === 'alias')
+            && ($event->getPropertyName() === 'alias_fields')
+            && ($event->getSubPropertyName() === 'field_attribute');
     }
 
     /**
@@ -98,7 +99,7 @@ class GetOptionsListener
      */
     public function getOptions(GetOptionsEvent $event)
     {
-        if (self::isEventForMe($event)) {
+        if (false === self::isEventForMe($event)) {
             return;
         }
 
