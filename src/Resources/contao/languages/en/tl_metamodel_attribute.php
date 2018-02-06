@@ -45,11 +45,5 @@ $GLOBALS['TL_LANG']['tl_metamodel_attribute']['force_alias'][1]       =
     'Check this, if you want the alias to be regenerated whenever any of the dependant fields is changed. Note that ' .
     'this will invalidate old urls that are based upon the alias.';
 
-$GLOBALS['TL_LANG']['tl_metamodel_attribute']['select_values']['id']         = 'ID';
-$GLOBALS['TL_LANG']['tl_metamodel_attribute']['select_values']['pid']        = 'PID';
-$GLOBALS['TL_LANG']['tl_metamodel_attribute']['select_values']['sorting']    = 'Sorting';
-$GLOBALS['TL_LANG']['tl_metamodel_attribute']['select_values']['tstamp']     = 'Timestamp';
-$GLOBALS['TL_LANG']['tl_metamodel_attribute']['select_values']['vargroup']   = 'Vargroup';
-$GLOBALS['TL_LANG']['tl_metamodel_attribute']['select_values']['varbase']    = 'Varbase';
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['select_values']['meta']       = 'Metafields';
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['select_values']['attributes'] = 'Attributes';
