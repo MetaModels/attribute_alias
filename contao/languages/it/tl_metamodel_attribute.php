@@ -8,13 +8,14 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2013-05-04T02:35:06+02:00
+ * last-updated: 2018-02-06T02:11:28+01:00
  */
 
+$GLOBALS['TL_LANG']['tl_metamodel_attribute']['alias_fields']['0']           = 'Campi alias';
+$GLOBALS['TL_LANG']['tl_metamodel_attribute']['alias_fields']['1']           = 'Seleziona uno o più attributi per combinare un alias.';
+$GLOBALS['TL_LANG']['tl_metamodel_attribute']['field_attribute']             = 'Attributi';
+$GLOBALS['TL_LANG']['tl_metamodel_attribute']['force_alias']['0']            = '​​Forza rigenerazione alias';
+$GLOBALS['TL_LANG']['tl_metamodel_attribute']['force_alias']['1']            = 'Seleziona per rigenerare l\'alias ogni volta che uno dei campi dipendenti si cambia. Nota che questa operazione fa invalido gli URL già esistenti che dipendono dall\'alias.';
+$GLOBALS['TL_LANG']['tl_metamodel_attribute']['select_values']['attributes'] = 'Attributi';
+$GLOBALS['TL_LANG']['tl_metamodel_attribute']['typeOptions']['alias']        = 'Alias';
 
-$GLOBALS['TL_LANG']['tl_metamodel_attribute']['alias_fields']['0']    = 'Campi alias';
-$GLOBALS['TL_LANG']['tl_metamodel_attribute']['alias_fields']['1']    = 'Seleziona uno o più attributi per combinare un alias.';
-$GLOBALS['TL_LANG']['tl_metamodel_attribute']['field_attribute']      = 'Attributi';
-$GLOBALS['TL_LANG']['tl_metamodel_attribute']['force_alias']['0']     = '​​Forza rigenerazione alias';
-$GLOBALS['TL_LANG']['tl_metamodel_attribute']['force_alias']['1']     = 'Seleziona per rigenerare l\'alias ogni volta che uno dei campi dipendenti si cambia. Nota che questa operazione fa invalido gli URL già esistenti che dipendono dall\'alias.';
-$GLOBALS['TL_LANG']['tl_metamodel_attribute']['typeOptions']['alias'] = 'Alias';
