@@ -66,7 +66,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['alias_fields'] = array
                 'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['field_attribute'],
                 'exclude'   => true,
                 'inputType' => 'select',
-                'reference' => &$GLOBALS['TL_LANG']['METAMODELS_SYSTEM_COLUMNS'],
+                'reference' => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['select_values'],
                 'eval'      => array
                 (
                     'style'  => 'width:600px',
