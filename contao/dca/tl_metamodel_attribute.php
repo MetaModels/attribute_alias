@@ -24,7 +24,7 @@
 $GLOBALS['TL_DCA']['tl_metamodel_attribute']['metapalettes']['alias extends _simpleattribute_'] = array
 (
     '+advanced' => array('force_alias'),
-    '+display'  => array('alias_prefix','alias_postfix','alias_fields after description')
+    '+display'  => array('alias_prefix', 'alias_postfix', 'alias_fields after description')
 );
 
 $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['alias_prefix'] = array
@@ -32,6 +32,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['alias_prefix'] = array
     'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['alias_prefix'],
     'exclude'   => true,
     'inputType' => 'text',
+    'sql'       => 'varchar(255) NOT NULL default \'\'',
     'eval'      => array
     (
         'rgxp'     => 'alpha',
@@ -44,6 +45,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['alias_postfix'] = array
     'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['alias_postfix'],
     'exclude'   => true,
     'inputType' => 'text',
+    'sql'       => 'varchar(255) NOT NULL default \'\'',
     'eval'      => array
     (
         'tl_class' => 'w50'
@@ -55,9 +57,10 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['alias_fields'] = array
     'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['alias_fields'],
     'exclude'   => true,
     'inputType' => 'multiColumnWizard',
+    'sql'       => 'blob NULL',
     'eval'      => array
     (
-        'tl_class' => 'clr',
+        'tl_class'     => 'clr',
         'columnFields' => array
         (
             'field_attribute' => array
@@ -81,6 +84,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['force_alias'] = array
     'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['force_alias'],
     'exclude'   => true,
     'inputType' => 'checkbox',
+    'sql'       => 'char(1) NOT NULL default \'\'',
     'eval'      => array
     (
         'tl_class' => 'cbx w50'
