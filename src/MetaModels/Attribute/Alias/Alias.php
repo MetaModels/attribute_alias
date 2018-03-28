@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_alias.
  *
- * (c) 2012-2017 The MetaModels team.
+ * (c) 2012-2018 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,7 +17,8 @@
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
  * @author     Oliver Hoff <oliver@hofff.com>
  * @author     Ingolf Steinhardt <info@e-spin.de>
- * @copyright  2012-2017 The MetaModels team.
+ * @author     Sven Baumann <baumann.sv@gmail.com>
+ * @copyright  2012-2018 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_alias/blob/master/LICENSE LGPL-3.0
  * @filesource
  */
@@ -27,13 +28,10 @@ namespace MetaModels\Attribute\Alias;
 use ContaoCommunityAlliance\Contao\Bindings\ContaoEvents;
 use ContaoCommunityAlliance\Contao\Bindings\Events\Controller\ReplaceInsertTagsEvent;
 use MetaModels\Attribute\BaseSimple;
+use MetaModels\IItem;
 
 /**
- * This is the MetaModelAttribute class for handling text fields.
- *
- * @package    MetaModels
- * @subpackage AttributeAlias
- * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
+ * This is the MetaModelAttribute class for handling the alias field.
  */
 class Alias extends BaseSimple
 {
@@ -50,9 +48,9 @@ class Alias extends BaseSimple
      */
     public function getAttributeSettingNames()
     {
-        return array_merge(
+        return \array_merge(
             parent::getAttributeSettingNames(),
-            array(
+            [
                 'alias_fields',
                 'isunique',
                 'force_alias',
@@ -60,28 +58,31 @@ class Alias extends BaseSimple
                 'alwaysSave',
                 'filterable',
                 'searchable',
-                'sortable'
-            )
+                'sortable',
+                'alias_prefix',
+                'alias_postfix'
+            ]
         );
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getFieldDefinition($arrOverrides = array())
+    public function getFieldDefinition($arrOverrides = [])
     {
         $arrFieldDef = parent::getFieldDefinition($arrOverrides);
 
         $arrFieldDef['inputType'] = 'text';
 
-        // W do not need to set mandatory, as we will automatically update our value when isunique is given.
+        // We do not need to set mandatory, as we will automatically update our value when isunique is given.
         if ($this->get('isunique')) {
             $arrFieldDef['eval']['mandatory'] = false;
         }
 
-        // If "force_alias" is ture set alwaysSave to true.
+        // If "force_alias" is true set alwaysSave and readonly to true.
         if ($this->get('force_alias')) {
             $arrFieldDef['eval']['alwaysSave'] = true;
+            $arrFieldDef['eval']['readonly']   = true;
         }
 
         return $arrFieldDef;
@@ -102,32 +103,89 @@ class Alias extends BaseSimple
             return;
         }
 
-        $arrAlias = [];
-        foreach (deserialize($this->get('alias_fields')) as $strAttribute) {
-            $arrValues  = $objItem->parseAttribute($strAttribute['field_attribute'], 'text', null);
-            $arrAlias[] = $arrValues['text'];
-        }
-
         $dispatcher   = $this->getMetaModel()->getServiceContainer()->getEventDispatcher();
-        $replaceEvent = new ReplaceInsertTagsEvent(implode('-', $arrAlias));
+        $replaceEvent = new ReplaceInsertTagsEvent($this->generateAlias($objItem));
         $dispatcher->dispatch(ContaoEvents::CONTROLLER_REPLACE_INSERT_TAGS, $replaceEvent);
 
         // Implode with '-', replace inserttags and strip HTML elements.
-        $strAlias = standardize(strip_tags($replaceEvent->getBuffer()));
+        $strAlias = \standardize(\strip_tags($replaceEvent->getBuffer()));
 
         // We need to fetch the attribute values for all attributes in the alias_fields and update the database and the
         // model accordingly.
         if ($this->get('isunique')) {
             // Ensure uniqueness.
             $strBaseAlias = $strAlias;
-            $arrIds       = array($objItem->get('id'));
+            $arrIds       = [$objItem->get('id')];
             $intCount     = 2;
-            while (array_diff($this->searchFor($strAlias), $arrIds)) {
+            while (\array_diff($this->searchFor($strAlias), $arrIds)) {
                 $strAlias = $strBaseAlias . '-' . ($intCount++);
             }
         }
 
-        $this->setDataFor(array($objItem->get('id') => $strAlias));
+        $this->setDataFor([$objItem->get('id') => $strAlias]);
         $objItem->set($this->getColName(), $strAlias);
+    }
+
+    /**
+     * Generate the alias.
+     *
+     * @param IItem $objItem The item.
+     *
+     * @return string
+     */
+    private function generateAlias(IItem $objItem)
+    {
+        $arrAlias = [];
+
+        if ($this->get('alias_prefix')) {
+            $arrAlias[] = $this->get('alias_prefix');
+        }
+
+        foreach (\deserialize($this->get('alias_fields')) as $strAttribute) {
+            if ($this->isMetaField($strAttribute['field_attribute'])) {
+                $strField   = $strAttribute['field_attribute'];
+                $arrAlias[] = $objItem->get($strField);
+            } else {
+                $arrValues  = $objItem->parseAttribute($strAttribute['field_attribute'], 'text', null);
+                $arrAlias[] = $arrValues['text'];
+            }
+        }
+
+        if ($this->get('alias_postfix')) {
+            $arrAlias[] = $this->get('alias_postfix');
+        }
+
+        return \implode('-', $arrAlias);
+    }
+
+    /**
+     * Check if we have a meta field from metamodels.
+     *
+     * @param string $strField The selected value.
+     *
+     * @return boolean True => Yes we have | False => nope.
+     */
+    protected function isMetaField($strField)
+    {
+        $strField = \trim($strField);
+
+        if (\in_array($strField, $this->getMetaModelsSystemColumns())) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns the global MetaModels System Columns (replacement for super global access).
+     *
+     * @return mixed Global MetaModels System Columns
+     *
+     * @SuppressWarnings(PHPMD.Superglobals)
+     * @SuppressWarnings(PHPMD.CamelCaseVariableName)
+     */
+    protected function getMetaModelsSystemColumns()
+    {
+        return $GLOBALS['METAMODELS_SYSTEM_COLUMNS'];
     }
 }

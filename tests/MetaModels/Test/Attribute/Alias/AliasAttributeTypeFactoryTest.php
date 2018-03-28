@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_alias.
  *
- * (c) 2012-2016 The MetaModels team.
+ * (c) 2012-2018 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,7 +13,8 @@
  * @package    MetaModels
  * @subpackage Tests
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
- * @copyright  2012-2016 The MetaModels team.
+ * @author     Sven Baumann <baumann.sv@gmail.com>
+ * @copyright  2012-2018 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_alias/blob/master/LICENSE LGPL-3.0
  * @filesource
  */
@@ -24,6 +25,7 @@ use MetaModels\Attribute\IAttributeTypeFactory;
 use MetaModels\Attribute\Alias\AttributeTypeFactory;
 use MetaModels\IMetaModel;
 use MetaModels\Test\Attribute\AttributeTypeFactoryTest;
+use MetaModels\Attribute\Alias\Alias;
 
 /**
  * Test the attribute factory.
@@ -45,11 +47,7 @@ class AliasAttributeTypeFactoryTest extends AttributeTypeFactoryTest
      */
     protected function mockMetaModel($tableName, $language, $fallbackLanguage)
     {
-        $metaModel = $this->getMock(
-            'MetaModels\MetaModel',
-            array(),
-            array(array())
-        );
+        $metaModel = $this->getMockForAbstractClass(IMetaModel::class);
 
         $metaModel
             ->expects($this->any())
@@ -76,7 +74,7 @@ class AliasAttributeTypeFactoryTest extends AttributeTypeFactoryTest
      */
     protected function getAttributeFactories()
     {
-        return array(new AttributeTypeFactory());
+        return [new AttributeTypeFactory()];
     }
 
     /**
@@ -87,19 +85,19 @@ class AliasAttributeTypeFactoryTest extends AttributeTypeFactoryTest
     public function testCreateSelect()
     {
         $factory   = new AttributeTypeFactory();
-        $values    = array(
+        $values    = [
             'force_alias'  => '',
-            'alias_fields' => serialize(array('title'))
-        );
+            'alias_fields' => \serialize(['title'])
+        ];
         $attribute = $factory->createInstance(
             $values,
             $this->mockMetaModel('mm_test', 'de', 'en')
         );
 
         $check                 = $values;
-        $check['alias_fields'] = unserialize($check['alias_fields']);
+        $check['alias_fields'] = \unserialize($check['alias_fields']);
 
-        $this->assertInstanceOf('MetaModels\Attribute\Alias\Alias', $attribute);
+        $this->assertInstanceOf(Alias::class, $attribute);
 
         foreach ($check as $key => $value) {
             $this->assertEquals($value, $attribute->get($key), $key);
