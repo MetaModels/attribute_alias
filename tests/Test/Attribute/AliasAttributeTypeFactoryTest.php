@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_alias.
  *
- * (c) 2012-2017 The MetaModels team.
+ * (c) 2012-2018 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,7 +14,8 @@
  * @subpackage Tests
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2012-2017 The MetaModels team.
+ * @author     Sven Baumann <baumann.sv@gmail.com>
+ * @copyright  2012-2018 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_alias/blob/master/LICENSE LGPL-3.0
  * @filesource
  */
@@ -49,7 +50,7 @@ class AliasAttributeTypeFactoryTest extends TestCase
      */
     protected function mockMetaModel($tableName, $language, $fallbackLanguage)
     {
-        $metaModel = $this->getMockBuilder('MetaModels\IMetaModel')->getMock();
+        $metaModel = $this->getMockBuilder(IMetaModel::class)->getMock();
 
         $metaModel
             ->expects($this->any())
@@ -105,7 +106,7 @@ class AliasAttributeTypeFactoryTest extends TestCase
         $connection  = $this->mockConnection();
         $manipulator = $this->mockTableManipulator($connection);
 
-        return array(new AttributeTypeFactory($connection, $manipulator));
+        return [new AttributeTypeFactory($connection, $manipulator)];
     }
 
     /**
@@ -119,17 +120,17 @@ class AliasAttributeTypeFactoryTest extends TestCase
         $manipulator = $this->mockTableManipulator($connection);
 
         $factory   = new AttributeTypeFactory($connection, $manipulator);
-        $values    = array(
+        $values    = [
             'force_alias'  => '',
-            'alias_fields' => serialize(array('title'))
-        );
+            'alias_fields' => \serialize(['title'])
+        ];
         $attribute = $factory->createInstance(
             $values,
             $this->mockMetaModel('mm_test', 'de', 'en')
         );
 
         $check                 = $values;
-        $check['alias_fields'] = unserialize($check['alias_fields']);
+        $check['alias_fields'] = \unserialize($check['alias_fields']);
 
         $this->assertInstanceOf(Alias::class, $attribute);
 

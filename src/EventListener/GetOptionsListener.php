@@ -16,6 +16,7 @@
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @author     Ingolf Steinhardt <info@e-spin.de>
  * @author     Richard Henkenjohann <richardhenkenjohann@googlemail.com>
+ * @author     Sven Baumann <baumann.sv@gmail.com>
  * @copyright  2012-2018 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_alias/blob/master/LICENSE LGPL-3.0
  * @filesource
@@ -129,7 +130,7 @@ class GetOptionsListener
                 continue;
             }
 
-            $result['attributes'][$attribute->getColName()] = sprintf(
+            $result['attributes'][$attribute->getColName()] = \sprintf(
                 '%s [%s]',
                 $attribute->getName(),
                 $attribute->get('type')

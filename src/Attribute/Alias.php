@@ -49,9 +49,9 @@ class Alias extends BaseSimple
      */
     public function getAttributeSettingNames()
     {
-        return array_merge(
+        return \array_merge(
             parent::getAttributeSettingNames(),
-            array(
+            [
                 'alias_fields',
                 'isunique',
                 'force_alias',
@@ -62,14 +62,14 @@ class Alias extends BaseSimple
                 'sortable',
                 'alias_prefix',
                 'alias_postfix'
-            )
+            ]
         );
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getFieldDefinition($arrOverrides = array())
+    public function getFieldDefinition($arrOverrides = [])
     {
         $arrFieldDef = parent::getFieldDefinition($arrOverrides);
 
@@ -109,21 +109,21 @@ class Alias extends BaseSimple
         $dispatcher->dispatch(ContaoEvents::CONTROLLER_REPLACE_INSERT_TAGS, $replaceEvent);
 
         // Implode with '-', replace inserttags and strip HTML elements.
-        $strAlias = standardize(strip_tags($replaceEvent->getBuffer()));
+        $strAlias = \standardize(\strip_tags($replaceEvent->getBuffer()));
 
         // We need to fetch the attribute values for all attributes in the alias_fields and update the database and the
         // model accordingly.
         if ($this->get('isunique')) {
             // Ensure uniqueness.
             $strBaseAlias = $strAlias;
-            $arrIds       = array($objItem->get('id'));
+            $arrIds       = [$objItem->get('id')];
             $intCount     = 2;
-            while (array_diff($this->searchFor($strAlias), $arrIds)) {
+            while (\array_diff($this->searchFor($strAlias), $arrIds)) {
                 $strAlias = $strBaseAlias . '-' . ($intCount++);
             }
         }
 
-        $this->setDataFor(array($objItem->get('id') => $strAlias));
+        $this->setDataFor([$objItem->get('id') => $strAlias]);
         $objItem->set($this->getColName(), $strAlias);
     }
 
@@ -142,7 +142,7 @@ class Alias extends BaseSimple
             $arrAlias[] = $this->get('alias_prefix');
         }
 
-        foreach (deserialize($this->get('alias_fields')) as $strAttribute) {
+        foreach (\deserialize($this->get('alias_fields')) as $strAttribute) {
             if ($this->isMetaField($strAttribute['field_attribute'])) {
                 $strField   = $strAttribute['field_attribute'];
                 $arrAlias[] = $objItem->get($strField);
@@ -156,7 +156,7 @@ class Alias extends BaseSimple
             $arrAlias[] = $this->get('alias_postfix');
         }
 
-        return implode('-', $arrAlias);
+        return \implode('-', $arrAlias);
     }
 
     /**
@@ -168,9 +168,9 @@ class Alias extends BaseSimple
      */
     protected function isMetaField($strField)
     {
-        $strField = trim($strField);
+        $strField = \trim($strField);
 
-        if (in_array($strField, $this->getMetaModelsSystemColumns())) {
+        if (\in_array($strField, $this->getMetaModelsSystemColumns())) {
             return true;
         }
 
