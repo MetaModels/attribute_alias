@@ -41,7 +41,7 @@ class Subscriber extends BaseSubscriber
         $this
             ->addListener(
                 GetOptionsEvent::NAME,
-                array($this, 'getOptions')
+                [$this, 'getOptions']
             );
     }
 
@@ -101,7 +101,7 @@ class Subscriber extends BaseSubscriber
             return;
         }
 
-        $result = array();
+        $result = [];
 
         // Add meta fields.
         $result['meta'] = self::getMetaModelsSystemColumns();

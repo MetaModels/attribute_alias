@@ -50,7 +50,7 @@ class Alias extends BaseSimple
     {
         return \array_merge(
             parent::getAttributeSettingNames(),
-            array(
+            [
                 'alias_fields',
                 'isunique',
                 'force_alias',
@@ -61,14 +61,14 @@ class Alias extends BaseSimple
                 'sortable',
                 'alias_prefix',
                 'alias_postfix'
-            )
+            ]
         );
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getFieldDefinition($arrOverrides = array())
+    public function getFieldDefinition($arrOverrides = [])
     {
         $arrFieldDef = parent::getFieldDefinition($arrOverrides);
 
@@ -115,14 +115,14 @@ class Alias extends BaseSimple
         if ($this->get('isunique')) {
             // Ensure uniqueness.
             $strBaseAlias = $strAlias;
-            $arrIds       = array($objItem->get('id'));
+            $arrIds       = [$objItem->get('id')];
             $intCount     = 2;
             while (\array_diff($this->searchFor($strAlias), $arrIds)) {
                 $strAlias = $strBaseAlias . '-' . ($intCount++);
             }
         }
 
-        $this->setDataFor(array($objItem->get('id') => $strAlias));
+        $this->setDataFor([$objItem->get('id') => $strAlias]);
         $objItem->set($this->getColName(), $strAlias);
     }
 
