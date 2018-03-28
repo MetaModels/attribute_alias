@@ -25,6 +25,7 @@ use MetaModels\Attribute\IAttributeTypeFactory;
 use MetaModels\Attribute\Alias\AttributeTypeFactory;
 use MetaModels\IMetaModel;
 use MetaModels\Test\Attribute\AttributeTypeFactoryTest;
+use MetaModels\Attribute\Alias\Alias;
 
 /**
  * Test the attribute factory.
@@ -46,7 +47,7 @@ class AliasAttributeTypeFactoryTest extends AttributeTypeFactoryTest
      */
     protected function mockMetaModel($tableName, $language, $fallbackLanguage)
     {
-        $metaModel = $this->getMockForAbstractClass('MetaModels\IMetaModel');
+        $metaModel = $this->getMockForAbstractClass(IMetaModel::class);
 
         $metaModel
             ->expects($this->any())
@@ -96,7 +97,7 @@ class AliasAttributeTypeFactoryTest extends AttributeTypeFactoryTest
         $check                 = $values;
         $check['alias_fields'] = \unserialize($check['alias_fields']);
 
-        $this->assertInstanceOf('MetaModels\Attribute\Alias\Alias', $attribute);
+        $this->assertInstanceOf(Alias::class, $attribute);
 
         foreach ($check as $key => $value) {
             $this->assertEquals($value, $attribute->get($key), $key);
