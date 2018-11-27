@@ -26,6 +26,7 @@
 
 namespace MetaModels\AttributeAliasBundle\Attribute;
 
+use Contao\StringUtil;
 use ContaoCommunityAlliance\Contao\Bindings\ContaoEvents;
 use ContaoCommunityAlliance\Contao\Bindings\Events\Controller\ReplaceInsertTagsEvent;
 use MetaModels\Attribute\BaseSimple;
@@ -109,7 +110,7 @@ class Alias extends BaseSimple
         $dispatcher->dispatch(ContaoEvents::CONTROLLER_REPLACE_INSERT_TAGS, $replaceEvent);
 
         // Implode with '-', replace inserttags and strip HTML elements.
-        $strAlias = \standardize(\strip_tags($replaceEvent->getBuffer()));
+        $strAlias = StringUtil::standardize(\strip_tags($replaceEvent->getBuffer()));
 
         // We need to fetch the attribute values for all attributes in the alias_fields and update the database and the
         // model accordingly.
@@ -142,7 +143,7 @@ class Alias extends BaseSimple
             $arrAlias[] = $this->get('alias_prefix');
         }
 
-        foreach (\deserialize($this->get('alias_fields')) as $strAttribute) {
+        foreach (StringUtil::deserialize($this->get('alias_fields')) as $strAttribute) {
             if ($this->isMetaField($strAttribute['field_attribute'])) {
                 $strField   = $strAttribute['field_attribute'];
                 $arrAlias[] = $objItem->get($strField);
