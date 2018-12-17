@@ -28,8 +28,6 @@ use MetaModels\Attribute\Alias\Alias;
 
 /**
  * Test the attribute factory.
- *
- * @package MetaModels\Test\Filter\Setting
  */
 class AliasAttributeTypeFactoryTest extends AttributeTypeFactoryTest
 {
