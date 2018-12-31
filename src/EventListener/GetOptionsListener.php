@@ -26,8 +26,8 @@ namespace MetaModels\AttributeAliasBundle\EventListener;
 
 use ContaoCommunityAlliance\DcGeneral\Contao\RequestScopeDeterminator;
 use ContaoCommunityAlliance\DcGeneral\Data\ModelId;
+use MenAtWork\MultiColumnWizardBundle\Event\GetOptionsEvent;
 use MetaModels\IFactory;
-use MultiColumnWizard\Event\GetOptionsEvent;
 
 /**
  * Handle events for tl_metamodel_attribute.alias_fields.attr_id.
