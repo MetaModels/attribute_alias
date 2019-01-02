@@ -7,7 +7,7 @@ services:
         tags:
           - { name: metamodels.attribute_factory }
 
-    metamodels.attribute_alias.backend_listner.get_options:
+    metamodels.attribute_alias.backend_listener.get_options:
         class: MetaModels\AttributeAliasBundle\EventListener\GetOptionsListener
         arguments:
           - '@cca.dc-general.scope-matcher'

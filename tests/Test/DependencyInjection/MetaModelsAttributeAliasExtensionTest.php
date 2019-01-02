@@ -101,7 +101,7 @@ class MetaModelsAttributeAliasExtensionTest extends TestCase
                     $this->anything(),
                 ],
                 [
-                    'metamodels.attribute_alias.backend_listner.get_options',
+                    'metamodels.attribute_alias.backend_listener.get_options',
                     $this->callback(
                         function ($value) {
                             /** @var Definition $value */
