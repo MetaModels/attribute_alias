@@ -20,10 +20,10 @@
 
 namespace MetaModels\AttributeAliasBundle\Test\DependencyInjection;
 
+use MenAtWork\MultiColumnWizardBundle\Event\GetOptionsEvent;
 use MetaModels\AttributeAliasBundle\Attribute\AttributeTypeFactory;
 use MetaModels\AttributeAliasBundle\EventListener\GetOptionsListener;
 use MetaModels\AttributeAliasBundle\DependencyInjection\MetaModelsAttributeAliasExtension;
-use MultiColumnWizard\Event\GetOptionsEvent;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -61,12 +61,11 @@ class MetaModelsAttributeAliasExtensionTest extends TestCase
             ->method('setDefinition')
             ->withConsecutive(
                 [
-                    'metamodels.attribute_alias.factory',
+                    AttributeTypeFactory::class,
                     $this->callback(
                         function ($value) {
                             /** @var Definition $value */
                             $this->assertInstanceOf(Definition::class, $value);
-                            $this->assertEquals(AttributeTypeFactory::class, $value->getClass());
                             $this->assertCount(1, $value->getTag('metamodels.attribute_factory'));
 
                             return true;
@@ -101,12 +100,11 @@ class MetaModelsAttributeAliasExtensionTest extends TestCase
                     $this->anything(),
                 ],
                 [
-                    'metamodels.attribute_alias.backend_listener.get_options',
+                    GetOptionsListener::class,
                     $this->callback(
                         function ($value) {
                             /** @var Definition $value */
                             $this->assertInstanceOf(Definition::class, $value);
-                            $this->assertEquals(GetOptionsListener::class, $value->getClass());
                             $this->assertCount(1, $value->getTag('kernel.event_listener'));
                             $this->assertEventListener(
                                 $value,

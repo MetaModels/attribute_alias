@@ -1,14 +1,14 @@
 services:
-    metamodels.attribute_alias.factory:
-        class: MetaModels\AttributeAliasBundle\Attribute\AttributeTypeFactory
+    MetaModels\AttributeAliasBundle\Attribute\AttributeTypeFactory:
+        class:
         arguments:
             - '@database_connection'
             - '@metamodels.table_manipulator'
         tags:
           - { name: metamodels.attribute_factory }
 
-    metamodels.attribute_alias.backend_listener.get_options:
-        class: MetaModels\AttributeAliasBundle\EventListener\GetOptionsListener
+    MetaModels\AttributeAliasBundle\EventListener\GetOptionsListener:
+        class:
         arguments:
           - '@cca.dc-general.scope-matcher'
           - '@metamodels.factory'
