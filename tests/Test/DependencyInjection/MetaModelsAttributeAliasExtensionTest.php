@@ -24,6 +24,7 @@ use MenAtWork\MultiColumnWizardBundle\Event\GetOptionsEvent;
 use MetaModels\AttributeAliasBundle\Attribute\AttributeTypeFactory;
 use MetaModels\AttributeAliasBundle\EventListener\GetOptionsListener;
 use MetaModels\AttributeAliasBundle\DependencyInjection\MetaModelsAttributeAliasExtension;
+use MetaModels\AttributeAliasBundle\Schema\DoctrineSchemaGenerator;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -52,12 +53,12 @@ class MetaModelsAttributeAliasExtensionTest extends TestCase
      *
      * @return void
      */
-    public function testFactoryIsRegistered()
+    public function testServicesAreRegistered(): void
     {
         $container = $this->getMockBuilder(ContainerBuilder::class)->getMock();
 
         $container
-            ->expects($this->exactly(2))
+            ->expects($this->exactly(3))
             ->method('setDefinition')
             ->withConsecutive(
                 [
@@ -73,33 +74,6 @@ class MetaModelsAttributeAliasExtensionTest extends TestCase
                     ),
                 ],
                 [
-                    $this->anything(),
-                    $this->anything(),
-                ]
-            );
-
-        $extension = new MetaModelsAttributeAliasExtension();
-        $extension->load([], $container);
-    }
-
-    /**
-    * Test that the event listener is registered.
-    *
-    * @return void
-    */
-    public function testEventListenersAreRegistered()
-    {
-        $container = $this->getMockBuilder(ContainerBuilder::class)->getMock();
-
-        $container
-            ->expects($this->exactly(2))
-            ->method('setDefinition')
-            ->withConsecutive(
-                [
-                    $this->anything(),
-                    $this->anything(),
-                ],
-                [
                     GetOptionsListener::class,
                     $this->callback(
                         function ($value) {
@@ -111,6 +85,18 @@ class MetaModelsAttributeAliasExtensionTest extends TestCase
                                 GetOptionsEvent::NAME,
                                 'getOptions'
                             );
+
+                            return true;
+                        }
+                    )
+                ],
+                [
+                    DoctrineSchemaGenerator::class,
+                    $this->callback(
+                        function ($value) {
+                            /** @var Definition $value */
+                            $this->assertInstanceOf(Definition::class, $value);
+                            $this->assertCount(1, $value->getTag('metamodels.schema-generator.doctrine'));
 
                             return true;
                         }

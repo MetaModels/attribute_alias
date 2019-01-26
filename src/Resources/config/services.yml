@@ -14,3 +14,7 @@ services:
           - '@metamodels.factory'
         tags:
           - { name: kernel.event_listener, event: 'men-at-work.multi-column-wizard-bundle.get-options', method: getOptions }
+
+    MetaModels\AttributeAliasBundle\Schema\DoctrineSchemaGenerator:
+      tags:
+        - { name: 'metamodels.schema-generator.doctrine' }

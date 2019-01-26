@@ -29,18 +29,28 @@ use Contao\StringUtil;
 use ContaoCommunityAlliance\Contao\Bindings\ContaoEvents;
 use ContaoCommunityAlliance\Contao\Bindings\Events\Controller\ReplaceInsertTagsEvent;
 use MetaModels\Attribute\BaseSimple;
+use MetaModels\Attribute\ISchemaManagedAttribute;
 use MetaModels\IItem;
 
 /**
  * This is the MetaModelAttribute class for handling the alias field.
  */
-class Alias extends BaseSimple
+class Alias extends BaseSimple implements ISchemaManagedAttribute
 {
     /**
      * {@inheritDoc}
+     *
+     * @deprecated Do not use.
      */
     public function getSQLDataType()
     {
+        // @codingStandardsIgnoreStart
+        @trigger_error(
+            'Class "' . __CLASS__ . '" is a managed attribute you should not call "' . __METHOD__ . '".',
+            E_USER_DEPRECATED
+        );
+        // @codingStandardsIgnoreEnd
+
         return 'varchar(255) NOT NULL default \'\'';
     }
 
