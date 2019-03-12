@@ -1,0 +1,16 @@
+services:
+    MetaModels\AttributeAliasBundle\Attribute\AttributeTypeFactory:
+        class:
+        arguments:
+            - '@database_connection'
+            - '@metamodels.table_manipulator'
+        tags:
+          - { name: metamodels.attribute_factory }
+
+    MetaModels\AttributeAliasBundle\EventListener\GetOptionsListener:
+        class:
+        arguments:
+          - '@cca.dc-general.scope-matcher'
+          - '@metamodels.factory'
+        tags:
+          - { name: kernel.event_listener, event: 'men-at-work.multi-column-wizard-bundle.get-options', method: getOptions }

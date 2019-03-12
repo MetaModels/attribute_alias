@@ -15,7 +15,9 @@
  * @author     Andreas Isaak <info@andreas-isaak.de>
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
  * @author     Ingolf Steinhardt <info@e-spin.de>
+ * @author     David Molineus <david.molineus@netzmacht.de>
  * @author     Sven Baumann <baumann.sv@gmail.com>
+ * @author     Richard Henkenjohann <richardhenkenjohann@googlemail.com>
  * @copyright  2012-2019 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_alias/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
@@ -59,7 +61,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['alias_fields'] = [
                 'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['field_attribute'],
                 'exclude'   => true,
                 'inputType' => 'select',
-                'reference' => &$GLOBALS['TL_LANG']['METAMODELS_SYSTEM_COLUMNS'],
+                'reference' => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['select_values'],
                 'eval'      => [
                     'style'  => 'width:600px',
                     'chosen' => 'true'

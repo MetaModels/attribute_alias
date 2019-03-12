@@ -13,17 +13,24 @@
  * @package    MetaModels/attribute_alias
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Andreas Isaak <info@andreas-isaak.de>
+ * @author     Stefan Heimes <stefan_heimes@hotmail.com>
+ * @author     David Molineus <david.molineus@netzmacht.de>
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @copyright  2012-2019 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_alias/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
 
-/**
- * Register the templates
- */
-TemplateLoader::addFiles(
-    [
-        'mm_attr_alias' => 'system/modules/metamodelsattribute_alias/templates',
+$GLOBALS['TL_DCA']['tl_metamodel_dcasetting']['metasubselectpalettes']['attr_id']['alias'] = [
+    'presentation' => [
+        'tl_class',
+    ],
+    'functions'    => [
+        'mandatory',
+        'alwaysSave'
+    ],
+    'overview'     => [
+        'filterable',
+        'searchable',
     ]
-);
+];

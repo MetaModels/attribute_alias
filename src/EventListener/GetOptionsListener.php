@@ -12,36 +12,51 @@
  *
  * @package    MetaModels/attribute_alias
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
+ * @author     David Molineus <david.molineus@netzmacht.de>
  * @author     Ingolf Steinhardt <info@e-spin.de>
+ * @author     Richard Henkenjohann <richardhenkenjohann@googlemail.com>
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @copyright  2012-2019 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_alias/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
 
-namespace MetaModels\DcGeneral\Events\Table\Attribute\Alias;
+namespace MetaModels\AttributeAliasBundle\EventListener;
 
-use ContaoCommunityAlliance\DcGeneral\Contao\View\Contao2BackendView\IdSerializer;
-use MenAtWork\MultiColumnWizard\Event\GetOptionsEvent;
-use MetaModels\DcGeneral\Events\BaseSubscriber;
+use ContaoCommunityAlliance\DcGeneral\Contao\RequestScopeDeterminator;
+use ContaoCommunityAlliance\DcGeneral\Data\ModelId;
+use MenAtWork\MultiColumnWizardBundle\Event\GetOptionsEvent;
+use MetaModels\IFactory;
 
 /**
  * Handle events for tl_metamodel_attribute.alias_fields.attr_id.
  */
-class Subscriber extends BaseSubscriber
+class GetOptionsListener
 {
     /**
-     * Register all listeners.
+     * Request scope determinator.
      *
-     * @return void
+     * @var RequestScopeDeterminator
      */
-    public function registerEventsInDispatcher()
+    private $scopeDeterminator;
+
+    /**
+     * Metamodels factory.
+     *
+     * @var IFactory
+     */
+    private $factory;
+
+    /**
+     * GetOptionsListener constructor.
+     *
+     * @param RequestScopeDeterminator $scopeDeterminator Request scope determinator.
+     * @param IFactory                 $factory           Metamodels factory.
+     */
+    public function __construct(RequestScopeDeterminator $scopeDeterminator, IFactory $factory)
     {
-        $this
-            ->addListener(
-                GetOptionsEvent::NAME,
-                [$this, 'getOptions']
-            );
+        $this->scopeDeterminator = $scopeDeterminator;
+        $this->factory           = $factory;
     }
 
     /**
@@ -53,6 +68,10 @@ class Subscriber extends BaseSubscriber
      */
     private function isEventForMe(GetOptionsEvent $event)
     {
+        if (false === $this->scopeDeterminator->currentScopeIsBackend()) {
+            return false;
+        }
+
         $input = $event->getEnvironment()->getInputProvider();
         $type  = $event->getModel()->getProperty('type');
 
@@ -65,10 +84,10 @@ class Subscriber extends BaseSubscriber
         }
 
         return
-            ($event->getEnvironment()->getDataDefinition()->getName() !== 'tl_metamodel_attribute')
-            || ($type !== 'alias')
-            || ($event->getPropertyName() !== 'alias_fields')
-            || ($event->getSubPropertyName() !== 'field_attribute');
+            ($event->getEnvironment()->getDataDefinition()->getName() === 'tl_metamodel_attribute')
+            && ($type === 'alias')
+            && ($event->getPropertyName() === 'alias_fields')
+            && ($event->getSubPropertyName() === 'field_attribute');
     }
 
     /**
@@ -80,21 +99,20 @@ class Subscriber extends BaseSubscriber
      */
     public function getOptions(GetOptionsEvent $event)
     {
-        if (self::isEventForMe($event)) {
+        if (false === self::isEventForMe($event)) {
             return;
         }
 
         $model       = $event->getModel();
         $metaModelId = $model->getProperty('pid');
         if (!$metaModelId) {
-            $metaModelId = IdSerializer::fromSerialized(
+            $metaModelId = ModelId::fromSerialized(
                 $event->getEnvironment()->getInputProvider()->getValue('pid')
             )->getId();
         }
 
-        $factory       = $this->getServiceContainer()->getFactory();
-        $metaModelName = $factory->translateIdToMetaModelName($metaModelId);
-        $metaModel     = $factory->getMetaModel($metaModelName);
+        $metaModelName = $this->factory->translateIdToMetaModelName($metaModelId);
+        $metaModel     = $this->factory->getMetaModel($metaModelName);
 
         if (!$metaModel) {
             return;
