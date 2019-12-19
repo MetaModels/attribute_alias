@@ -14,3 +14,9 @@ services:
           - '@metamodels.factory'
         tags:
           - { name: kernel.event_listener, event: 'men-at-work.multi-column-wizard-bundle.get-options', method: getOptions }
+
+    MetaModels\AttributeAliasBundle\Migration\AllowNullMigration:
+        arguments:
+            - '@database_connection'
+        tags:
+            - name: contao.migration
