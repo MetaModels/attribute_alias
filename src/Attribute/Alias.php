@@ -41,7 +41,7 @@ class Alias extends BaseSimple
      */
     public function getSQLDataType()
     {
-        return 'varchar(255) NOT NULL default \'\'';
+        return 'varchar(255) NULL';
     }
 
     /**
@@ -188,5 +188,15 @@ class Alias extends BaseSimple
     protected function getMetaModelsSystemColumns()
     {
         return $GLOBALS['METAMODELS_SYSTEM_COLUMNS'];
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * This is needed for compatibility with MySQL strict mode.
+     */
+    public function serializeData($value)
+    {
+        return $value === '' ? null : $value;
     }
 }
