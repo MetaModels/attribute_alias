@@ -1,18 +1,29 @@
 <?php
 /**
- * Translations are managed using Transifex. To create a new translation
+ * This file is part of MetaModels/attribute_alias.
+ *
+ * (c) 2012-2020 The MetaModels team.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * This project is provided in good faith and hope to be usable by anyone.
+ *
+ * Translations are managed automatically using Transifex. To create a new translation
  * or to help to maintain an existing one, please register at transifex.com.
  *
- * @link http://help.transifex.com/intro/translating.html
- * @link https://www.transifex.com/projects/p/metamodels/language/el/
+ * Last-updated: 2020-02-25T22:32:35+01:00
  *
- * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
- *
- * last-updated: 2018-02-06T02:11:28+01:00
+ * @copyright 2012-2020 The MetaModels team.
+ * @license   https://github.com/MetaModels/attribute_alias/blob/master/LICENSE LGPL-3.0-or-later
+ * @link      https://www.transifex.com/metamodels/public/
+ * @link      https://www.transifex.com/signup/?join_project=metamodels
  */
+
 
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['alias_fields']['0']           = 'Πεδια ψευδωνυμου';
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['alias_fields']['1']           = 'Παρακαλούμε επιλέξτε ένα ή περισσότερα χαρακτηριστικά για να συνδυάσετε ενα ψευδωνυμο. ';
+$GLOBALS['TL_LANG']['tl_metamodel_attribute']['display_legend']              = 'Ρυθμίσεις οθόνης ';
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['field_attribute']             = ' Χαρακτηριστικά';
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['force_alias']['0']            = 'Force αναγέννηση ψευδωνυμου';
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['force_alias']['1']            = 'Ελέγξτε αυτό, αν θέλετε το ψευδώνυμο που θα αναγεννηθεί κάθε φορά που κάποιο από τα πεδία που εξαρτώνται αλλάζει. Σημειώστε ότι αυτό θα ακυρώσει τις παλιές διευθύνσεις URL που βασίζονται στα ψευδώνυμο. ';
