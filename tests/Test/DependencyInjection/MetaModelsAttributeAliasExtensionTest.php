@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_alias.
  *
- * (c) 2012-2019 The MetaModels team.
+ * (c) 2012-2020 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,10 +13,13 @@
  * @package    MetaModels/attribute_alias
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2012-2019 The MetaModels team.
+ * @author     Ingolf Steinhardt <info@e-spin.de>
+ * @copyright  2012-2020 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_alias/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
+
+declare(strict_types = 1);
 
 namespace MetaModels\AttributeAliasBundle\Test\DependencyInjection;
 
@@ -24,6 +27,7 @@ use MenAtWork\MultiColumnWizardBundle\Event\GetOptionsEvent;
 use MetaModels\AttributeAliasBundle\Attribute\AttributeTypeFactory;
 use MetaModels\AttributeAliasBundle\EventListener\GetOptionsListener;
 use MetaModels\AttributeAliasBundle\DependencyInjection\MetaModelsAttributeAliasExtension;
+use MetaModels\AttributeAliasBundle\Migration\AllowNullMigration;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -52,12 +56,12 @@ class MetaModelsAttributeAliasExtensionTest extends TestCase
      *
      * @return void
      */
-    public function testFactoryIsRegistered()
+    public function testRegistersServices()
     {
         $container = $this->getMockBuilder(ContainerBuilder::class)->getMock();
 
         $container
-            ->expects($this->exactly(2))
+            ->expects($this->exactly(3))
             ->method('setDefinition')
             ->withConsecutive(
                 [
@@ -75,6 +79,18 @@ class MetaModelsAttributeAliasExtensionTest extends TestCase
                 [
                     $this->anything(),
                     $this->anything(),
+                ],
+                [
+                    AllowNullMigration::class,
+                    $this->callback(
+                        function ($value) {
+                            /** @var Definition $value */
+                            $this->assertInstanceOf(Definition::class, $value);
+                            $this->assertCount(1, $value->getTag('contao.migration'));
+
+                            return true;
+                        }
+                    )
                 ]
             );
 
@@ -92,7 +108,7 @@ class MetaModelsAttributeAliasExtensionTest extends TestCase
         $container = $this->getMockBuilder(ContainerBuilder::class)->getMock();
 
         $container
-            ->expects($this->exactly(2))
+            ->expects($this->exactly(3))
             ->method('setDefinition')
             ->withConsecutive(
                 [
