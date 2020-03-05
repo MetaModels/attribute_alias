@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_alias.
  *
- * (c) 2012-2018 The MetaModels team.
+ * (c) 2012-2020 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -16,7 +16,7 @@
  * @author     Andreas Isaak <info@andreas-isaak.de>
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
  * @author     Ingolf Steinhardt <info@e-spin.de>
- * @copyright  2012-2018 The MetaModels team.
+ * @copyright  2012-2020 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_alias/blob/master/LICENSE LGPL-3.0
  * @filesource
  */
@@ -30,6 +30,12 @@ $GLOBALS['TL_LANG']['tl_metamodel_attribute']['display_legend'] = 'Display setti
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['typeOptions']['alias'] = 'Alias';
+$GLOBALS['TL_LANG']['tl_metamodel_attribute']['slugLocale'][0]        = 'Convert language';
+$GLOBALS['TL_LANG']['tl_metamodel_attribute']['slugLocale'][1]        =
+    'Please enter the language to convert alias characters according to the ISO-639-1 standard (e.g. "en" for English or "en-US" for American English).';
+$GLOBALS['TL_LANG']['tl_metamodel_attribute']['skipIntegerPrefix'][0] = 'Skip integer prefix';
+$GLOBALS['TL_LANG']['tl_metamodel_attribute']['skipIntegerPrefix'][1] =
+    'Skip to generate prefix "id-" if first character integer.';
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['alias_prefix'][0]      = 'Alias prefix';
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['alias_prefix'][1]      =
     'Optionally add a prefix term.';

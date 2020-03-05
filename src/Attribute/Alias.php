@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_alias.
  *
- * (c) 2012-2019 The MetaModels team.
+ * (c) 2012-2020 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -18,13 +18,14 @@
  * @author     Ingolf Steinhardt <info@e-spin.de>
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2012-2019 The MetaModels team.
+ * @copyright  2012-2020 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_alias/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
 
 namespace MetaModels\AttributeAliasBundle\Attribute;
 
+use Ausi\SlugGenerator\SlugGenerator;
 use Contao\StringUtil;
 use ContaoCommunityAlliance\Contao\Bindings\ContaoEvents;
 use ContaoCommunityAlliance\Contao\Bindings\Events\Controller\ReplaceInsertTagsEvent;
@@ -36,6 +37,20 @@ use MetaModels\IItem;
  */
 class Alias extends BaseSimple
 {
+    /**
+     * The alias.
+     *
+     * @var string
+     */
+    private $alias;
+
+    /**
+     * The integer prefix.
+     *
+     * @var string
+     */
+    private $integerPrefix = 'id-';
+
     /**
      * {@inheritDoc}
      */
@@ -60,6 +75,9 @@ class Alias extends BaseSimple
                 'filterable',
                 'searchable',
                 'sortable',
+                'validAliasCharacters',
+                'slugLocale',
+                'skipIntegerPrefix',
                 'alias_prefix',
                 'alias_postfix'
             ]
@@ -104,27 +122,80 @@ class Alias extends BaseSimple
             return;
         }
 
-        $dispatcher   = $this->getMetaModel()->getServiceContainer()->getEventDispatcher();
-        $replaceEvent = new ReplaceInsertTagsEvent($this->generateAlias($objItem));
-        $dispatcher->dispatch(ContaoEvents::CONTROLLER_REPLACE_INSERT_TAGS, $replaceEvent);
+        // Generate alias string.
+        $this->alias = $this->generateAlias($objItem);
 
-        // Implode with '-', replace inserttags and strip HTML elements.
-        $strAlias = StringUtil::standardize(\strip_tags($replaceEvent->getBuffer()));
+        // Convert alias with Contao standardize or slug.
+        if ($this->get('validAliasCharacters')) {
+            $this->convertAliasBySlug();
+        } else {
+            $this->convertAliasByStandardize();
+        }
 
         // We need to fetch the attribute values for all attributes in the alias_fields and update the database and the
         // model accordingly.
         if ($this->get('isunique')) {
             // Ensure uniqueness.
-            $strBaseAlias = $strAlias;
+            $strBaseAlias = $this->alias;
             $arrIds       = [$objItem->get('id')];
             $intCount     = 2;
-            while (\array_diff($this->searchFor($strAlias), $arrIds)) {
-                $strAlias = $strBaseAlias . '-' . ($intCount++);
+            while (\array_diff($this->searchFor($this->alias), $arrIds)) {
+                $this->alias = $strBaseAlias . '-' . ($intCount++);
             }
         }
 
-        $this->setDataFor([$objItem->get('id') => $strAlias]);
-        $objItem->set($this->getColName(), $strAlias);
+        $this->setDataFor([$objItem->get('id') => $this->alias]);
+        $objItem->set($this->getColName(), $this->alias);
+    }
+
+
+    /**
+     * Convert alias by standardize.
+     */
+    private function convertAliasByStandardize()
+    {
+        $dispatcher   = $this->getMetaModel()->getServiceContainer()->getEventDispatcher();
+        $replaceEvent = new ReplaceInsertTagsEvent($this->alias);
+        $dispatcher->dispatch(ContaoEvents::CONTROLLER_REPLACE_INSERT_TAGS, $replaceEvent);
+
+        // Implode with '-', replace inserttags and strip HTML elements.
+        $baseAlias   = $this->alias;
+        $this->alias = StringUtil::standardize(\strip_tags($replaceEvent->getBuffer()));
+
+        // Check skip integer prefix.
+        if (!$this->get('skipIntegerPrefix')) {
+            return;
+        }
+
+        // Skip integer prefix is added by standardize.
+        if ($this->integerPrefix !== substr($baseAlias, 0, strlen($this->integerPrefix))
+            && $this->integerPrefix === substr($this->alias, 0, strlen($this->integerPrefix))) {
+            $this->alias = substr($this->alias, strlen($this->integerPrefix));
+        }
+
+        return;
+    }
+
+    /**
+     * Convert alias by slug.
+     */
+    private function convertAliasBySlug()
+    {
+        $slugOptions = [
+            'locale'     => $this->get('slugLocale'),
+            'validChars' => $this->get('validAliasCharacters')
+        ];
+
+        $slugGenerator = new SlugGenerator();
+        $baseAlias     = StringUtil::prepareSlug($this->alias);
+        $this->alias   = $slugGenerator->generate($baseAlias, $slugOptions);
+
+        // Add integer prefix.
+        if (!$this->get('skipIntegerPrefix') && preg_match('/^[1-9]\d*$/', $this->alias)) {
+            $this->alias = $this->integerPrefix . $this->alias;
+        }
+
+        return;
     }
 
     /**
@@ -138,7 +209,7 @@ class Alias extends BaseSimple
     {
         $arrAlias = [];
 
-        if ($this->get('alias_prefix')) {
+        if (!empty($this->get('alias_prefix'))) {
             $arrAlias[] = $this->get('alias_prefix');
         }
 
@@ -152,7 +223,7 @@ class Alias extends BaseSimple
             }
         }
 
-        if ($this->get('alias_postfix')) {
+        if (!empty($this->get('alias_postfix'))) {
             $arrAlias[] = $this->get('alias_postfix');
         }
 
