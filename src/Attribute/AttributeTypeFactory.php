@@ -21,9 +21,11 @@
 
 namespace MetaModels\AttributeAliasBundle\Attribute;
 
+use Contao\CoreBundle\Slug\Slug;
 use Doctrine\DBAL\Connection;
 use MetaModels\Attribute\AbstractSimpleAttributeTypeFactory;
 use MetaModels\Helper\TableManipulator;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Attribute type factory for select attributes.
@@ -31,14 +33,49 @@ use MetaModels\Helper\TableManipulator;
 class AttributeTypeFactory extends AbstractSimpleAttributeTypeFactory
 {
     /**
+     * The event dispatcher.
+     *
+     * @var EventDispatcherInterface
+     */
+    private $dispatcher;
+
+    /**
+     * The Contao slug generator.
+     *
+     * @var Slug
+     */
+    private $slug;
+
+    /**
      * {@inheritDoc}
      */
-    public function __construct(Connection $connection, TableManipulator $tableManipulator)
-    {
+    public function __construct(
+        Connection $connection,
+        TableManipulator $tableManipulator,
+        EventDispatcherInterface $dispatcher,
+        Slug $slug
+    ) {
         parent::__construct($connection, $tableManipulator);
 
-        $this->typeName  = 'alias';
-        $this->typeIcon  = 'bundles/metamodelsattributealias/alias.png';
-        $this->typeClass = Alias::class;
+        $this->typeName   = 'alias';
+        $this->typeIcon   = 'bundles/metamodelsattributealias/alias.png';
+        $this->typeClass  = Alias::class;
+        $this->dispatcher = $dispatcher;
+        $this->slug       = $slug;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function createInstance($information, $metaModel)
+    {
+        return new $this->typeClass(
+            $metaModel,
+            $information,
+            $this->connection,
+            $this->tableManipulator,
+            $this->dispatcher,
+            $this->slug
+        );
     }
 }

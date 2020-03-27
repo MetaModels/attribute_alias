@@ -18,6 +18,7 @@
  * @author     Ingolf Steinhardt <info@e-spin.de>
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     David Molineus <david.molineus@netzmacht.de>
+ * @author     Richard Henkenjohann <richardhenkenjohann@googlemail.com>
  * @copyright  2012-2020 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_alias/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
@@ -25,31 +26,62 @@
 
 namespace MetaModels\AttributeAliasBundle\Attribute;
 
-use Ausi\SlugGenerator\SlugGenerator;
+use Contao\CoreBundle\Slug\Slug as SlugGenerator;
 use Contao\StringUtil;
+use Contao\System;
 use ContaoCommunityAlliance\Contao\Bindings\ContaoEvents;
 use ContaoCommunityAlliance\Contao\Bindings\Events\Controller\ReplaceInsertTagsEvent;
+use Doctrine\DBAL\Connection;
 use MetaModels\Attribute\BaseSimple;
+use MetaModels\Helper\TableManipulator;
 use MetaModels\IItem;
+use MetaModels\IMetaModel;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * This is the MetaModelAttribute class for handling the alias field.
  */
 class Alias extends BaseSimple
 {
-    /**
-     * The alias.
-     *
-     * @var string
-     */
-    private $alias;
 
     /**
-     * The integer prefix.
+     * The Contao slug generator.
      *
-     * @var string
+     * @var SlugGenerator
      */
-    private $integerPrefix = 'id-';
+    private $slugGenerator;
+
+    /**
+     * The event dispatcher.
+     *
+     * @var EventDispatcherInterface
+     */
+    private $dispatcher;
+
+    /**
+     * {@inheritDoc}
+     */
+    public function __construct(
+        IMetaModel $objMetaModel,
+        $arrData = [],
+        Connection $connection = null,
+        TableManipulator $tableManipulator = null,
+        EventDispatcherInterface $dispatcher = null,
+        SlugGenerator $slugGenerator = null
+    ) {
+        parent::__construct($objMetaModel, $arrData, $connection, $tableManipulator);
+
+        if (null === $slugGenerator) {
+            $slugGenerator = System::getContainer()->get('contao.slug');
+        }
+
+        if (null === $dispatcher) {
+            $dispatcher = System::getContainer()->get('event_dispatcher');
+        }
+
+        $this->dispatcher    = $dispatcher;
+        $this->slugGenerator = $slugGenerator;
+    }
 
     /**
      * {@inheritDoc}
@@ -77,7 +109,7 @@ class Alias extends BaseSimple
                 'sortable',
                 'validAliasCharacters',
                 'slugLocale',
-                'skipIntegerPrefix',
+                'integerPrefix',
                 'alias_prefix',
                 'alias_postfix'
             ]
@@ -113,89 +145,54 @@ class Alias extends BaseSimple
     public function modelSaved($objItem)
     {
         // Alias already defined and no update forced, get out!
-        if ($objItem->get($this->getColName()) && (!$this->get('force_alias'))) {
+        if (!$this->get('force_alias') && $objItem->get($this->getColName())) {
             return;
         }
 
         // Item is a variant but no overriding allowed, get out!
-        if ($objItem->isVariant() && (!$this->get('isvariant'))) {
+        if ($objItem->isVariant() && !$this->get('isvariant')) {
             return;
         }
 
-        // Generate alias string.
-        $this->alias = $this->generateAlias($objItem);
+        $itemId = $objItem->get('id');
+        $alias  = $this->generateAlias($objItem);
+        $slug   = $this->generateSlug($alias, $itemId);
 
-        // Convert alias with Contao standardize or slug.
-        if ($this->get('validAliasCharacters')) {
-            $this->convertAliasBySlug();
-        } else {
-            $this->convertAliasByStandardize();
-        }
-
-        // We need to fetch the attribute values for all attributes in the alias_fields and update the database and the
-        // model accordingly.
-        if ($this->get('isunique')) {
-            // Ensure uniqueness.
-            $strBaseAlias = $this->alias;
-            $arrIds       = [$objItem->get('id')];
-            $intCount     = 2;
-            while (\array_diff($this->searchFor($this->alias), $arrIds)) {
-                $this->alias = $strBaseAlias . '-' . ($intCount++);
-            }
-        }
-
-        $this->setDataFor([$objItem->get('id') => $this->alias]);
-        $objItem->set($this->getColName(), $this->alias);
-    }
-
-
-    /**
-     * Convert alias by standardize.
-     */
-    private function convertAliasByStandardize()
-    {
-        $dispatcher   = $this->getMetaModel()->getServiceContainer()->getEventDispatcher();
-        $replaceEvent = new ReplaceInsertTagsEvent($this->alias);
-        $dispatcher->dispatch(ContaoEvents::CONTROLLER_REPLACE_INSERT_TAGS, $replaceEvent);
-
-        // Implode with '-', replace inserttags and strip HTML elements.
-        $baseAlias   = $this->alias;
-        $this->alias = StringUtil::standardize(\strip_tags($replaceEvent->getBuffer()));
-
-        // Check skip integer prefix.
-        if (!$this->get('skipIntegerPrefix')) {
-            return;
-        }
-
-        // Skip integer prefix is added by standardize.
-        if ($this->integerPrefix !== substr($baseAlias, 0, strlen($this->integerPrefix))
-            && $this->integerPrefix === substr($this->alias, 0, strlen($this->integerPrefix))) {
-            $this->alias = substr($this->alias, strlen($this->integerPrefix));
-        }
-
-        return;
+        $this->setDataFor([$itemId => $slug]);
+        $objItem->set($this->getColName(), $slug);
     }
 
     /**
-     * Convert alias by slug.
+     * Generate a slug from the alias.
+     *
+     * @param string $alias  The alias.
+     *
+     * @param string $itemId The item id to check for duplicates.
+     *
+     * @return string The generated slug.
      */
-    private function convertAliasBySlug()
+    private function generateSlug(string $alias, string $itemId): string
     {
+        $replaceEvent = new ReplaceInsertTagsEvent($alias);
+        $this->dispatcher->dispatch(ContaoEvents::CONTROLLER_REPLACE_INSERT_TAGS, $replaceEvent);
+
         $slugOptions = [
-            'locale'     => $this->get('slugLocale'),
-            'validChars' => $this->get('validAliasCharacters')
+            'locale'     => $this->get('slugLocale') ?? '',
+            'validChars' => $this->get('validAliasCharacters') ?? '0-9a-z'
         ];
 
-        $slugGenerator = new SlugGenerator();
-        $baseAlias     = StringUtil::prepareSlug($this->alias);
-        $this->alias   = $slugGenerator->generate($baseAlias, $slugOptions);
+        return $this->slugGenerator->generate(
+            $alias,
+            $slugOptions,
+            function (string $alias) use ($itemId) {
+                if (!$this->get('isunique')) {
+                    return false;
+                }
 
-        // Add integer prefix.
-        if (!$this->get('skipIntegerPrefix') && preg_match('/^[1-9]\d*$/', $this->alias)) {
-            $this->alias = $this->integerPrefix . $this->alias;
-        }
-
-        return;
+                return [] !== \array_diff($this->searchFor($alias), [$itemId]);
+            },
+            $this->get('integerPrefix') ?? 'id-'
+        );
     }
 
     /**
@@ -205,29 +202,29 @@ class Alias extends BaseSimple
      *
      * @return string
      */
-    private function generateAlias(IItem $objItem)
+    private function generateAlias(IItem $objItem): string
     {
-        $arrAlias = [];
+        $parts = [];
 
         if (!empty($this->get('alias_prefix'))) {
-            $arrAlias[] = $this->get('alias_prefix');
+            $parts[] = $this->get('alias_prefix');
         }
 
-        foreach (StringUtil::deserialize($this->get('alias_fields')) as $strAttribute) {
-            if ($this->isMetaField($strAttribute['field_attribute'])) {
-                $strField   = $strAttribute['field_attribute'];
-                $arrAlias[] = $objItem->get($strField);
+        foreach (StringUtil::deserialize($this->get('alias_fields'), true) as $aliasField) {
+            if ($this->isMetaField($aliasField['field_attribute'])) {
+                $attribute = $aliasField['field_attribute'];
+                $parts[]   = $objItem->get($attribute);
             } else {
-                $arrValues  = $objItem->parseAttribute($strAttribute['field_attribute'], 'text', null);
-                $arrAlias[] = $arrValues['text'];
+                $arrValues = $objItem->parseAttribute($aliasField['field_attribute'], 'text', null);
+                $parts[]   = $arrValues['text'];
             }
         }
 
         if (!empty($this->get('alias_postfix'))) {
-            $arrAlias[] = $this->get('alias_postfix');
+            $parts[] = $this->get('alias_postfix');
         }
 
-        return \implode('-', $arrAlias);
+        return \implode('-', $parts);
     }
 
     /**
@@ -237,11 +234,11 @@ class Alias extends BaseSimple
      *
      * @return boolean True => Yes we have | False => nope.
      */
-    protected function isMetaField($strField)
+    protected function isMetaField($strField): bool
     {
         $strField = \trim($strField);
 
-        if (\in_array($strField, $this->getMetaModelsSystemColumns())) {
+        if (\in_array($strField, $this->getMetaModelsSystemColumns(), true)) {
             return true;
         }
 

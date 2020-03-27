@@ -33,9 +33,9 @@ $GLOBALS['TL_LANG']['tl_metamodel_attribute']['typeOptions']['alias'] = 'Alias';
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['slugLocale'][0]        = 'Convert language';
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['slugLocale'][1]        =
     'Please enter the language to convert alias characters according to the ISO-639-1 standard (e.g. "en" for English or "en-US" for American English).';
-$GLOBALS['TL_LANG']['tl_metamodel_attribute']['skipIntegerPrefix'][0] = 'Skip integer prefix';
-$GLOBALS['TL_LANG']['tl_metamodel_attribute']['skipIntegerPrefix'][1] =
-    'Skip to generate prefix "id-" if first character integer.';
+$GLOBALS['TL_LANG']['tl_metamodel_attribute']['integerPrefix'][0]     = 'Integer prefix';
+$GLOBALS['TL_LANG']['tl_metamodel_attribute']['integerPrefix'][1]     =
+    'Specify the prefix if the alias is numeric (default: "id-").';
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['alias_prefix'][0]      = 'Alias prefix';
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['alias_prefix'][1]      =
     'Optionally add a prefix term.';
