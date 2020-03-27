@@ -58,7 +58,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['slugLocale'] = [
     'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['slugLocale'],
     'exclude'   => true,
     'inputType' => 'text',
-    'sql'       => 'varchar(5) NOT NULL default \'\'',
+    'sql'       => 'varchar(5) default NULL',
     'eval'      => [
         'rgxp'      => 'language',
         'maxlength' => 5,
@@ -70,7 +70,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['slugLocale'] = [
 $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['integerPrefix'] = [
     'exclude'   => true,
     'inputType' => 'text',
-    'sql'       => 'varchar(64) default NULL',
+    'sql'       => "varchar(64) default 'id-'",
     'eval'      => [
         'tl_class' => 'clr w50'
     ],
