@@ -109,7 +109,7 @@ class Alias extends BaseSimple
                 'sortable',
                 'validAliasCharacters',
                 'slugLocale',
-                'integerPrefix',
+                'noIntegerPrefix',
                 'alias_prefix',
                 'alias_postfix'
             ]
@@ -193,11 +193,11 @@ class Alias extends BaseSimple
                 }
 
                 return [] !== \array_diff($this->searchFor($alias), [$itemId]);
-            }/*,
-            $this->get('integerPrefix') ?? 'id-'*/
+            },
+            $this->get('noIntegerPrefix') ? '' : 'id-'
         );
 
-        if (\is_numeric($slug[0]) && !$this->get('validAliasCharacters')) {
+        if (\is_numeric($slug[0]) && !$this->get('validAliasCharacters') && !$this->get('noIntegerPrefix')) {
             // BC mode. In prior versions, StringUtil::standardize was used to generate the alias
             // which always added an prefix for aliases starting with a number.
             $slug = 'id-' . $slug;

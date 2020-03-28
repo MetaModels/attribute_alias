@@ -30,9 +30,9 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['metapalettes']['alias extends _sim
     '+display'  => [
         'validAliasCharacters',
         'slugLocale',
-        'integerPrefix',
         'alias_prefix',
         'alias_postfix',
+        'noIntegerPrefix',
         'alias_fields after description'
     ]
 ];
@@ -67,10 +67,10 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['slugLocale'] = [
     ],
 ];
 
-$GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['integerPrefix'] = [
+$GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['noIntegerPrefix'] = [
     'exclude'   => true,
-    'inputType' => 'text',
-    'sql'       => "varchar(64) default 'id-'",
+    'inputType' => 'checkbox',
+    'sql'       => "char(1) NOT NULL default ''",
     'eval'      => [
         'tl_class' => 'clr w50'
     ],
