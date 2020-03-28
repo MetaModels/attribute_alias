@@ -103,7 +103,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['alias_fields'] = [
     'inputType' => 'multiColumnWizard',
     'sql'       => 'blob NULL',
     'eval'      => [
-        'tl_class'     => 'clr',
+        'tl_class'     => 'clr w50',
         'columnFields' => [
             'field_attribute' => [
                 'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['field_attribute'],
@@ -111,7 +111,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['alias_fields'] = [
                 'inputType' => 'select',
                 'reference' => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['select_values'],
                 'eval'      => [
-                    'style'  => 'width:600px',
+                    'style'  => 'width:100%',
                     'chosen' => 'true'
                 ]
             ],
