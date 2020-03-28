@@ -184,7 +184,7 @@ class Alias extends BaseSimple
             ];
         }
 
-        return $this->slugGenerator->generate(
+        $slug = $this->slugGenerator->generate(
             $alias,
             $slugOptions,
             function (string $alias) use ($itemId) {
@@ -193,9 +193,17 @@ class Alias extends BaseSimple
                 }
 
                 return [] !== \array_diff($this->searchFor($alias), [$itemId]);
-            },
-            $this->get('integerPrefix') ?? 'id-'
+            }/*,
+            $this->get('integerPrefix') ?? 'id-'*/
         );
+
+        if (\is_numeric($slug[0]) && !$this->get('validAliasCharacters')) {
+            // BC mode. In prior versions, StringUtil::standardize was used to generate the alias
+            // which always added an prefix for aliases starting with a number.
+            $slug = 'id-' . $slug;
+        }
+
+        return $slug;
     }
 
     /**
