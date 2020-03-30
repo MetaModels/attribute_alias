@@ -70,7 +70,6 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['slugLocale'] = [
 $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['noIntegerPrefix'] = [
     'exclude'   => true,
     'inputType' => 'checkbox',
-    'default'   => 1,
     'sql'       => "char(1) NOT NULL default ''",
     'eval'      => [
         'tl_class' => 'clr w50'
