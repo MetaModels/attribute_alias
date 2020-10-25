@@ -72,7 +72,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['noIntegerPrefix'] = [
     'inputType' => 'checkbox',
     'sql'       => "char(1) NOT NULL default ''",
     'eval'      => [
-        'tl_class' => 'clr w50'
+        'tl_class' => 'clr w50 cbx m12'
     ],
 ];
 
