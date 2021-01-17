@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_alias.
  *
- * (c) 2012-2020 The MetaModels team.
+ * (c) 2012-2021 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -18,7 +18,7 @@
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     Richard Henkenjohann <richardhenkenjohann@googlemail.com>
- * @copyright  2012-2020 The MetaModels team.
+ * @copyright  2012-2021 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_alias/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -35,6 +35,17 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['metapalettes']['alias extends _sim
         'noIntegerPrefix',
         'alias_fields after description'
     ]
+];
+
+$GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['force_alias'] = [
+    'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['force_alias'],
+    'exclude'   => true,
+    'inputType' => 'checkbox',
+    'default'   => '1',
+    'sql'       => 'char(1) NOT NULL default \'\'',
+    'eval'      => [
+        'tl_class' => 'clr w50 cbx m12'
+    ],
 ];
 
 $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['validAliasCharacters'] = [
@@ -70,7 +81,8 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['slugLocale'] = [
 $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['noIntegerPrefix'] = [
     'exclude'   => true,
     'inputType' => 'checkbox',
-    'sql'       => "char(1) NOT NULL default ''",
+    'default'   => '1',
+    'sql'       => 'char(1) NOT NULL default \'\'',
     'eval'      => [
         'tl_class' => 'clr w50 cbx m12'
     ],
@@ -116,15 +128,5 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['alias_fields'] = [
                 ]
             ],
         ],
-    ],
-];
-
-$GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['force_alias'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['force_alias'],
-    'exclude'   => true,
-    'inputType' => 'checkbox',
-    'sql'       => 'char(1) NOT NULL default \'\'',
-    'eval'      => [
-        'tl_class' => 'cbx w50'
     ],
 ];
