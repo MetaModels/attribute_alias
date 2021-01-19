@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_alias.
  *
- * (c) 2012-2020 The MetaModels team.
+ * (c) 2012-2021 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -19,7 +19,7 @@
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @author     Richard Henkenjohann <richardhenkenjohann@googlemail.com>
- * @copyright  2012-2020 The MetaModels team.
+ * @copyright  2012-2021 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_alias/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -123,7 +123,8 @@ class Alias extends BaseSimple
     {
         $arrFieldDef = parent::getFieldDefinition($arrOverrides);
 
-        $arrFieldDef['inputType'] = 'text';
+        $arrFieldDef['inputType']         = 'text';
+        $arrFieldDef['eval']['maxlength'] = '255';
 
         // We do not need to set mandatory, as we will automatically update our value when isunique is given.
         if ($this->get('isunique')) {
