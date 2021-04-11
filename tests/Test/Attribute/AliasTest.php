@@ -26,11 +26,14 @@ use Doctrine\DBAL\Connection;
 use MetaModels\AttributeAliasBundle\Attribute\Alias;
 use MetaModels\Helper\TableManipulator;
 use MetaModels\IMetaModel;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Unit tests to test class Alias.
+ *
+ * @covers \MetaModels\AttributeAliasBundle\Attribute\Alias
  */
 class AliasTest extends TestCase
 {
@@ -44,22 +47,22 @@ class AliasTest extends TestCase
      */
     protected function mockMetaModel($language, $fallbackLanguage)
     {
-        $metaModel = $this->getMockBuilder('MetaModels\IMetaModel')->getMock();
+        $metaModel = $this->getMockBuilder(IMetaModel::class)->getMock();
 
         $metaModel
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getTableName')
-            ->will($this->returnValue('mm_unittest'));
+            ->willReturn('mm_unittest');
 
         $metaModel
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getActiveLanguage')
-            ->will($this->returnValue($language));
+            ->willReturn($language);
 
         $metaModel
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getFallbackLanguage')
-            ->will($this->returnValue($fallbackLanguage));
+            ->willReturn($fallbackLanguage);
 
         return $metaModel;
     }
@@ -67,7 +70,7 @@ class AliasTest extends TestCase
     /**
      * Mock the database connection.
      *
-     * @return \PHPUnit_Framework_MockObject_MockObject|Connection
+     * @return MockObject|Connection
      */
     private function mockConnection()
     {
@@ -81,7 +84,7 @@ class AliasTest extends TestCase
      *
      * @param Connection $connection The database connection mock.
      *
-     * @return TableManipulator|\PHPUnit_Framework_MockObject_MockObject
+     * @return TableManipulator|MockObject
      */
     private function mockTableManipulator(Connection $connection)
     {
@@ -103,6 +106,6 @@ class AliasTest extends TestCase
         $slugGenerator = $this->createMock(Slug::class);
 
         $text = new Alias($this->mockMetaModel('en', 'en'), [], $connection, $manipulator, $dispatcher, $slugGenerator);
-        $this->assertInstanceOf(Alias::class, $text);
+        self::assertInstanceOf(Alias::class, $text);
     }
 }

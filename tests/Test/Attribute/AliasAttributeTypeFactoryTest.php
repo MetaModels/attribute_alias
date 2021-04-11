@@ -28,11 +28,14 @@ use MetaModels\AttributeAliasBundle\Attribute\Alias;
 use MetaModels\AttributeAliasBundle\Attribute\AttributeTypeFactory;
 use MetaModels\Helper\TableManipulator;
 use MetaModels\IMetaModel;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Test the attribute factory.
+ *
+ * @covers \MetaModels\AttributeAliasBundle\Attribute\AttributeTypeFactory
  */
 class AliasAttributeTypeFactoryTest extends TestCase
 {
@@ -52,19 +55,19 @@ class AliasAttributeTypeFactoryTest extends TestCase
         $metaModel = $this->getMockBuilder(IMetaModel::class)->getMock();
 
         $metaModel
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getTableName')
-            ->will($this->returnValue($tableName));
+            ->willReturn($tableName);
 
         $metaModel
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getActiveLanguage')
-            ->will($this->returnValue($language));
+            ->willReturn($language);
 
         $metaModel
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getFallbackLanguage')
-            ->will($this->returnValue($fallbackLanguage));
+            ->willReturn($fallbackLanguage);
 
         return $metaModel;
     }
@@ -72,7 +75,7 @@ class AliasAttributeTypeFactoryTest extends TestCase
     /**
      * Mock the database connection.
      *
-     * @return \PHPUnit_Framework_MockObject_MockObject|Connection
+     * @return MockObject|Connection
      */
     private function mockConnection()
     {
@@ -86,7 +89,7 @@ class AliasAttributeTypeFactoryTest extends TestCase
      *
      * @param Connection $connection The database connection mock.
      *
-     * @return TableManipulator|\PHPUnit_Framework_MockObject_MockObject
+     * @return TableManipulator|MockObject
      */
     private function mockTableManipulator(Connection $connection)
     {
@@ -104,8 +107,10 @@ class AliasAttributeTypeFactoryTest extends TestCase
     {
         $connection  = $this->mockConnection();
         $manipulator = $this->mockTableManipulator($connection);
+        $dispatcher  = $this->getMockForAbstractClass(EventDispatcherInterface::class);
+        $slug        = $this->createMock(Slug::class);
 
-        return [new AttributeTypeFactory($connection, $manipulator)];
+        return [new AttributeTypeFactory($connection, $manipulator, $dispatcher, $slug)];
     }
 
     /**
@@ -133,10 +138,10 @@ class AliasAttributeTypeFactoryTest extends TestCase
         $check                 = $values;
         $check['alias_fields'] = \unserialize($check['alias_fields']);
 
-        $this->assertInstanceOf(Alias::class, $attribute);
+        self::assertInstanceOf(Alias::class, $attribute);
 
         foreach ($check as $key => $value) {
-            $this->assertEquals($value, $attribute->get($key), $key);
+            self::assertEquals($value, $attribute->get($key), $key);
         }
     }
 }
