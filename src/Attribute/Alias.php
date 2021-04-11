@@ -177,7 +177,7 @@ class Alias extends BaseSimple
         $replaceEvent = new ReplaceInsertTagsEvent($alias);
         $this->dispatcher->dispatch(ContaoEvents::CONTROLLER_REPLACE_INSERT_TAGS, $replaceEvent);
 
-        $slugOptions = ['locale' => $this->get('slugLocale') ?? ''];
+        $slugOptions = ['locale' => ($this->get('slugLocale') ?? '')];
 
         if ($this->get('validAliasCharacters')) {
             $slugOptions += [
