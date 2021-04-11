@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_alias.
  *
- * (c) 2012-2019 The MetaModels team.
+ * (c) 2012-2021 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,18 +14,20 @@
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @author     Sven Baumann <baumann.sv@gmail.com>
- * @copyright  2012-2019 The MetaModels team.
+ * @copyright  2012-2021 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_alias/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
 
 namespace MetaModels\AttributeAliasBundle\Test\Attribute;
 
+use Contao\CoreBundle\Slug\Slug;
 use Doctrine\DBAL\Connection;
 use MetaModels\AttributeAliasBundle\Attribute\Alias;
 use MetaModels\Helper\TableManipulator;
 use MetaModels\IMetaModel;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Unit tests to test class Alias.
@@ -95,10 +97,12 @@ class AliasTest extends TestCase
      */
     public function testInstantiation()
     {
-        $connection  = $this->mockConnection();
-        $manipulator = $this->mockTableManipulator($connection);
+        $connection    = $this->mockConnection();
+        $manipulator   = $this->mockTableManipulator($connection);
+        $dispatcher    = $this->getMockForAbstractClass(EventDispatcherInterface::class);
+        $slugGenerator = $this->createMock(Slug::class);
 
-        $text = new Alias($this->mockMetaModel('en', 'en'), [], $connection, $manipulator);
+        $text = new Alias($this->mockMetaModel('en', 'en'), [], $connection, $manipulator, $dispatcher, $slugGenerator);
         $this->assertInstanceOf(Alias::class, $text);
     }
 }
