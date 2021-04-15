@@ -175,7 +175,7 @@ class Alias extends BaseSimple
     private function generateSlug(string $alias, string $itemId): string
     {
         $replaceEvent = new ReplaceInsertTagsEvent($alias);
-        $this->dispatcher->dispatch(ContaoEvents::CONTROLLER_REPLACE_INSERT_TAGS, $replaceEvent);
+        $this->dispatcher->dispatch($replaceEvent, ContaoEvents::CONTROLLER_REPLACE_INSERT_TAGS);
 
         $slugOptions = ['locale' => ($this->get('slugLocale') ?? '')];
 
