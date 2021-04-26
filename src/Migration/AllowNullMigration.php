@@ -164,7 +164,7 @@ class AllowNullMigration extends AbstractMigration
             ->where('attribute.type=:type')
             ->setParameter('type', 'alias')
             ->execute()
-            ->fetchAll(FetchMode::ASSOCIATIVE);
+            ->fetchAllAssociative();
 
         $result = [];
         foreach ($langColumns as $langColumn) {
