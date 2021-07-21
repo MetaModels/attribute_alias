@@ -25,10 +25,13 @@ use Doctrine\DBAL\Connection;
 use MetaModels\AttributeAliasBundle\Attribute\Alias;
 use MetaModels\Helper\TableManipulator;
 use MetaModels\IMetaModel;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests to test class Alias.
+ *
+ * @covers \MetaModels\AttributeAliasBundle\Attribute\Alias
  */
 class AliasTest extends TestCase
 {
@@ -65,7 +68,7 @@ class AliasTest extends TestCase
     /**
      * Mock the database connection.
      *
-     * @return \PHPUnit_Framework_MockObject_MockObject|Connection
+     * @return MockObject|Connection
      */
     private function mockConnection()
     {
@@ -79,7 +82,7 @@ class AliasTest extends TestCase
      *
      * @param Connection $connection The database connection mock.
      *
-     * @return TableManipulator|\PHPUnit_Framework_MockObject_MockObject
+     * @return TableManipulator|MockObject
      */
     private function mockTableManipulator(Connection $connection)
     {
