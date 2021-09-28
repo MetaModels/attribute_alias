@@ -35,6 +35,8 @@ use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 
 /**
  * This test case test the extension.
+ *
+ * @covers \MetaModels\AttributeAliasBundle\DependencyInjection\MetaModelsAttributeAliasExtension
  */
 class MetaModelsAttributeAliasExtensionTest extends TestCase
 {
