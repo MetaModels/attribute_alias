@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_alias.
  *
- * (c) 2012-2020 The MetaModels team.
+ * (c) 2012-2022 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -16,7 +16,7 @@
  * @author     Ingolf Steinhardt <info@e-spin.de>
  * @author     Richard Henkenjohann <richardhenkenjohann@googlemail.com>
  * @author     Sven Baumann <baumann.sv@gmail.com>
- * @copyright  2012-2020 The MetaModels team.
+ * @copyright  2012-2022 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_alias/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -73,20 +73,8 @@ class GetOptionsListener
             return false;
         }
 
-        $input = $event->getEnvironment()->getInputProvider();
-        $type  = $event->getModel()->getProperty('type');
-
-        if ($input->hasValue('type')) {
-            $type = $input->getValue('type');
-        }
-
-        if (empty($type)) {
-            $type = $event->getModel()->getProperty('type');
-        }
-
         return
             ($event->getEnvironment()->getDataDefinition()->getName() === 'tl_metamodel_attribute')
-            && ($type === 'alias')
             && ($event->getPropertyName() === 'alias_fields')
             && ($event->getSubPropertyName() === 'field_attribute');
     }
@@ -100,7 +88,7 @@ class GetOptionsListener
      */
     public function getOptions(GetOptionsEvent $event)
     {
-        if (false === self::isEventForMe($event)) {
+        if (null === $event->getOptions() && !$this->isEventForMe($event)) {
             return;
         }
 
@@ -108,7 +96,7 @@ class GetOptionsListener
         $metaModelId = $model->getProperty('pid');
         if (!$metaModelId) {
             $metaModelId = ModelId::fromSerialized(
-                $event->getEnvironment()->getInputProvider()->getValue('pid')
+                $event->getEnvironment()->getInputProvider()->getParameter('pid')
             )->getId();
         }
 
