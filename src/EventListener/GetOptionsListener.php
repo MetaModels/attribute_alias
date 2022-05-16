@@ -88,7 +88,7 @@ class GetOptionsListener
      */
     public function getOptions(GetOptionsEvent $event)
     {
-        if (null === $event->getOptions() && !$this->isEventForMe($event)) {
+        if (null !== $event->getOptions() || !$this->isEventForMe($event)) {
             return;
         }
 
