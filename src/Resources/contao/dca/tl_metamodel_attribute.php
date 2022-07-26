@@ -23,8 +23,6 @@
  * @filesource
  */
 
-\Controller::loadDataContainer('tl_page');
-
 $GLOBALS['TL_DCA']['tl_metamodel_attribute']['metapalettes']['alias extends _simpleattribute_'] = [
     '+advanced' => ['force_alias'],
     '+display'  => [
@@ -49,7 +47,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['force_alias'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['validAliasCharacters'] = [
-    'label'            => &$GLOBALS['TL_LANG']['tl_page']['validAliasCharacters'],
+    'label'            => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['validAliasCharacters'],
     'exclude'          => true,
     'inputType'        => 'select',
     'options_callback' => static function () {
