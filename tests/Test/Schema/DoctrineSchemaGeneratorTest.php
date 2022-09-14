@@ -23,6 +23,7 @@ namespace MetaModels\AttributeAliasBundle\Test\Schema;
 
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use MetaModels\AttributeAliasBundle\Schema\DoctrineSchemaGenerator;
 use MetaModels\Information\AttributeInformation;
 use PHPUnit\Framework\TestCase;
@@ -51,8 +52,9 @@ class DoctrineSchemaGeneratorTest extends TestCase
         $this->assertTrue($tableSchema->hasColumn('test'));
         $column = $tableSchema->getColumn('test');
         $this->assertSame('test', $column->getName());
-        $this->assertSame(Type::getType(Type::STRING), $column->getType());
+        $this->assertSame(Type::getType(Types::STRING), $column->getType());
         $this->assertSame(255, $column->getLength());
-        $this->assertSame('', $column->getDefault());
+        $this->assertSame(null, $column->getDefault());
+        $this->assertFalse($column->getNotnull());
     }
 }

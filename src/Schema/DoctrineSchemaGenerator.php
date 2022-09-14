@@ -22,7 +22,7 @@ declare(strict_types = 1);
 namespace MetaModels\AttributeAliasBundle\Schema;
 
 use Doctrine\DBAL\Schema\Table;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use MetaModels\Information\AttributeInformation;
 use MetaModels\Schema\Doctrine\AbstractAttributeTypeSchemaGenerator;
 
@@ -44,9 +44,10 @@ class DoctrineSchemaGenerator extends AbstractAttributeTypeSchemaGenerator
      */
     protected function generateAttribute(Table $tableSchema, AttributeInformation $attribute): void
     {
-        $this->setColumnData($tableSchema, $attribute->getName(), Type::STRING, [
+        $this->setColumnData($tableSchema, $attribute->getName(), Types::STRING, [
             'length' => 255,
-            'default' => '',
+            'default' => null,
+            'notnull' => false,
         ]);
     }
 }
