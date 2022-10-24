@@ -33,7 +33,6 @@ use ContaoCommunityAlliance\Contao\Bindings\ContaoEvents;
 use ContaoCommunityAlliance\Contao\Bindings\Events\Controller\ReplaceInsertTagsEvent;
 use Doctrine\DBAL\Connection;
 use MetaModels\Attribute\BaseSimple;
-use MetaModels\Attribute\ISchemaManagedAttribute;
 use MetaModels\Helper\TableManipulator;
 use MetaModels\IItem;
 use MetaModels\IMetaModel;
@@ -42,7 +41,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 /**
  * This is the MetaModelAttribute class for handling the alias field.
  */
-class Alias extends BaseSimple implements ISchemaManagedAttribute
+class Alias extends BaseSimple
 {
 
     /**
