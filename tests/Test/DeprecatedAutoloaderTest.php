@@ -28,8 +28,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * This class tests if the deprecated autoloader works.
  *
- * @covers \MetaModels\AttributeAliasBundle\Attribute\Alias
- * @covers \MetaModels\AttributeAliasBundle\Attribute\AttributeTypeFactory
+ * @coversNothing
  */
 class DeprecatedAutoloaderTest extends TestCase
 {
