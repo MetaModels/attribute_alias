@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_alias.
  *
- * (c) 2012-2019 The MetaModels team.
+ * (c) 2012-2022 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -18,14 +18,72 @@
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     Richard Henkenjohann <richardhenkenjohann@googlemail.com>
- * @copyright  2012-2019 The MetaModels team.
+ * @copyright  2012-2022 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_alias/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
 
 $GLOBALS['TL_DCA']['tl_metamodel_attribute']['metapalettes']['alias extends _simpleattribute_'] = [
     '+advanced' => ['force_alias'],
-    '+display'  => ['alias_prefix', 'alias_postfix', 'alias_fields after description']
+    '+display'  => [
+        'validAliasCharacters',
+        'slugLocale',
+        'alias_prefix',
+        'alias_postfix',
+        'noIntegerPrefix',
+        'alias_fields after description'
+    ]
+];
+
+$GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['force_alias'] = [
+    'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['force_alias'],
+    'exclude'   => true,
+    'inputType' => 'checkbox',
+    'default'   => '1',
+    'sql'       => 'char(1) NOT NULL default \'\'',
+    'eval'      => [
+        'tl_class' => 'clr w50 cbx m12'
+    ],
+];
+
+$GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['validAliasCharacters'] = [
+    'label'            => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['validAliasCharacters'],
+    'exclude'          => true,
+    'inputType'        => 'select',
+    'options_callback' => static function () {
+        return Contao\System::getContainer()->get('contao.slug.valid_characters')->getOptions();
+    },
+    'eval'             => [
+        'includeBlankOption' => true,
+        'decodeEntities'     => true,
+        'tl_class'           => 'w50',
+        'helpwizard'         => true,
+    ],
+    'explanation'      => 'validAliasCharacters',
+    'sql'              => "varchar(255) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['slugLocale'] = [
+    'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['slugLocale'],
+    'exclude'   => true,
+    'inputType' => 'text',
+    'sql'       => 'varchar(5) default NULL',
+    'eval'      => [
+        'rgxp'      => 'language',
+        'maxlength' => 5,
+        'nospace'   => true,
+        'tl_class'  => 'w50'
+    ],
+];
+
+$GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['noIntegerPrefix'] = [
+    'exclude'   => true,
+    'inputType' => 'checkbox',
+    'default'   => '1',
+    'sql'       => 'char(1) NOT NULL default \'\'',
+    'eval'      => [
+        'tl_class' => 'clr w50 cbx m12'
+    ],
 ];
 
 $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['alias_prefix'] = [
@@ -55,7 +113,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['alias_fields'] = [
     'inputType' => 'multiColumnWizard',
     'sql'       => 'blob NULL',
     'eval'      => [
-        'tl_class'     => 'clr',
+        'tl_class'     => 'clr w50',
         'columnFields' => [
             'field_attribute' => [
                 'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['field_attribute'],
@@ -63,20 +121,10 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['alias_fields'] = [
                 'inputType' => 'select',
                 'reference' => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['select_values'],
                 'eval'      => [
-                    'style'  => 'width:600px',
+                    'style'  => 'width:100%',
                     'chosen' => 'true'
                 ]
             ],
         ],
-    ],
-];
-
-$GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['force_alias'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['force_alias'],
-    'exclude'   => true,
-    'inputType' => 'checkbox',
-    'sql'       => 'char(1) NOT NULL default \'\'',
-    'eval'      => [
-        'tl_class' => 'cbx w50'
     ],
 ];

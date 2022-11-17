@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_alias.
  *
- * (c) 2012-2019 The MetaModels team.
+ * (c) 2012-2021 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,13 +14,14 @@
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @author     Sven Baumann <baumann.sv@gmail.com>
- * @copyright  2012-2019 The MetaModels team.
+ * @copyright  2012-2021 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_alias/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
 
 namespace MetaModels\AttributeAliasBundle\Test\Attribute;
 
+use Contao\CoreBundle\Slug\Slug;
 use Doctrine\DBAL\Connection;
 use MetaModels\Attribute\IAttributeTypeFactory;
 use MetaModels\AttributeAliasBundle\Attribute\Alias;
@@ -29,6 +30,7 @@ use MetaModels\Helper\TableManipulator;
 use MetaModels\IMetaModel;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Test the attribute factory.
@@ -53,19 +55,19 @@ class AliasAttributeTypeFactoryTest extends TestCase
         $metaModel = $this->getMockBuilder(IMetaModel::class)->getMock();
 
         $metaModel
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getTableName')
-            ->will($this->returnValue($tableName));
+            ->willReturn($tableName);
 
         $metaModel
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getActiveLanguage')
-            ->will($this->returnValue($language));
+            ->willReturn($language);
 
         $metaModel
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getFallbackLanguage')
-            ->will($this->returnValue($fallbackLanguage));
+            ->willReturn($fallbackLanguage);
 
         return $metaModel;
     }
@@ -105,8 +107,10 @@ class AliasAttributeTypeFactoryTest extends TestCase
     {
         $connection  = $this->mockConnection();
         $manipulator = $this->mockTableManipulator($connection);
+        $dispatcher  = $this->getMockForAbstractClass(EventDispatcherInterface::class);
+        $slug        = $this->createMock(Slug::class);
 
-        return [new AttributeTypeFactory($connection, $manipulator)];
+        return [new AttributeTypeFactory($connection, $manipulator, $dispatcher, $slug)];
     }
 
     /**
@@ -118,8 +122,10 @@ class AliasAttributeTypeFactoryTest extends TestCase
     {
         $connection  = $this->mockConnection();
         $manipulator = $this->mockTableManipulator($connection);
+        $dispatcher  = $this->getMockForAbstractClass(EventDispatcherInterface::class);
+        $slug        = $this->createMock(Slug::class);
 
-        $factory   = new AttributeTypeFactory($connection, $manipulator);
+        $factory   = new AttributeTypeFactory($connection, $manipulator, $dispatcher, $slug);
         $values    = [
             'force_alias'  => '',
             'alias_fields' => \serialize(['title'])
@@ -132,10 +138,10 @@ class AliasAttributeTypeFactoryTest extends TestCase
         $check                 = $values;
         $check['alias_fields'] = \unserialize($check['alias_fields']);
 
-        $this->assertInstanceOf(Alias::class, $attribute);
+        self::assertInstanceOf(Alias::class, $attribute);
 
         foreach ($check as $key => $value) {
-            $this->assertEquals($value, $attribute->get($key), $key);
+            self::assertEquals($value, $attribute->get($key), $key);
         }
     }
 }

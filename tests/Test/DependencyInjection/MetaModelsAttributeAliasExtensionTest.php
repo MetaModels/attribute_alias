@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_alias.
  *
- * (c) 2012-2020 The MetaModels team.
+ * (c) 2012-2021 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,7 +14,8 @@
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @author     Ingolf Steinhardt <info@e-spin.de>
- * @copyright  2012-2020 The MetaModels team.
+ * @author     Sven Baumann <baumann.sv@gmail.com>
+ * @copyright  2012-2021 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_alias/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -49,8 +50,8 @@ class MetaModelsAttributeAliasExtensionTest extends TestCase
     {
         $extension = new MetaModelsAttributeAliasExtension();
 
-        $this->assertInstanceOf(MetaModelsAttributeAliasExtension::class, $extension);
-        $this->assertInstanceOf(ExtensionInterface::class, $extension);
+        self::assertInstanceOf(MetaModelsAttributeAliasExtension::class, $extension);
+        self::assertInstanceOf(ExtensionInterface::class, $extension);
     }
 
     /**
@@ -63,12 +64,12 @@ class MetaModelsAttributeAliasExtensionTest extends TestCase
         $container = $this->getMockBuilder(ContainerBuilder::class)->getMock();
 
         $container
-            ->expects($this->exactly(3))
+            ->expects(self::exactly(3))
             ->method('setDefinition')
             ->withConsecutive(
                 [
                     AttributeTypeFactory::class,
-                    $this->callback(
+                    self::callback(
                         function ($value) {
                             /** @var Definition $value */
                             $this->assertInstanceOf(Definition::class, $value);
@@ -79,12 +80,12 @@ class MetaModelsAttributeAliasExtensionTest extends TestCase
                     ),
                 ],
                 [
-                    $this->anything(),
-                    $this->anything(),
+                    self::anything(),
+                    self::anything(),
                 ],
                 [
                     AllowNullMigration::class,
-                    $this->callback(
+                    self::callback(
                         function ($value) {
                             /** @var Definition $value */
                             $this->assertInstanceOf(Definition::class, $value);
@@ -110,16 +111,16 @@ class MetaModelsAttributeAliasExtensionTest extends TestCase
         $container = $this->getMockBuilder(ContainerBuilder::class)->getMock();
 
         $container
-            ->expects($this->exactly(3))
+            ->expects(self::exactly(3))
             ->method('setDefinition')
             ->withConsecutive(
                 [
-                    $this->anything(),
-                    $this->anything(),
+                    self::anything(),
+                    self::anything(),
                 ],
                 [
                     GetOptionsListener::class,
-                    $this->callback(
+                    self::callback(
                         function ($value) {
                             /** @var Definition $value */
                             $this->assertInstanceOf(Definition::class, $value);
@@ -151,12 +152,12 @@ class MetaModelsAttributeAliasExtensionTest extends TestCase
      */
     private function assertEventListener(Definition $definition, $eventName, $methodName)
     {
-        $this->assertCount(1, $definition->getTag('kernel.event_listener'));
-        $this->assertArrayHasKey(0, $definition->getTag('kernel.event_listener'));
-        $this->assertArrayHasKey('event', $definition->getTag('kernel.event_listener')[0]);
-        $this->assertArrayHasKey('method', $definition->getTag('kernel.event_listener')[0]);
+        self::assertCount(1, $definition->getTag('kernel.event_listener'));
+        self::assertArrayHasKey(0, $definition->getTag('kernel.event_listener'));
+        self::assertArrayHasKey('event', $definition->getTag('kernel.event_listener')[0]);
+        self::assertArrayHasKey('method', $definition->getTag('kernel.event_listener')[0]);
 
-        $this->assertEquals($eventName, $definition->getTag('kernel.event_listener')[0]['event']);
-        $this->assertEquals($methodName, $definition->getTag('kernel.event_listener')[0]['method']);
+        self::assertEquals($eventName, $definition->getTag('kernel.event_listener')[0]['event']);
+        self::assertEquals($methodName, $definition->getTag('kernel.event_listener')[0]['method']);
     }
 }
