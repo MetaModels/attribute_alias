@@ -28,6 +28,7 @@ use MenAtWork\MultiColumnWizardBundle\Event\GetOptionsEvent;
 use MetaModels\AttributeAliasBundle\Attribute\AttributeTypeFactory;
 use MetaModels\AttributeAliasBundle\EventListener\GetOptionsListener;
 use MetaModels\AttributeAliasBundle\DependencyInjection\MetaModelsAttributeAliasExtension;
+use MetaModels\AttributeAliasBundle\Schema\DoctrineSchemaGenerator;
 use MetaModels\AttributeAliasBundle\Migration\AllowNullMigration;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -130,6 +131,18 @@ class MetaModelsAttributeAliasExtensionTest extends TestCase
                                 GetOptionsEvent::NAME,
                                 'getOptions'
                             );
+
+                            return true;
+                        }
+                    )
+                ],
+                [
+                    DoctrineSchemaGenerator::class,
+                    $this->callback(
+                        function ($value) {
+                            /** @var Definition $value */
+                            $this->assertInstanceOf(Definition::class, $value);
+                            $this->assertCount(1, $value->getTag('metamodels.schema-generator.doctrine'));
 
                             return true;
                         }
