@@ -17,6 +17,14 @@ services:
         tags:
           - { name: kernel.event_listener, event: 'men-at-work.multi-column-wizard-bundle.get-options', method: getOptions }
 
+    MetaModels\AttributeAliasBundle\EventListener\SetUniqueAsDefaultListener:
+        arguments:
+          - '@cca.dc-general.scope-matcher'
+        tags:
+          - name: kernel.event_listener
+            event: dc-general.view.contao2backend.build-widget
+            method: buildWidget
+
     MetaModels\AttributeAliasBundle\Migration\AllowNullMigration:
         arguments:
             - '@database_connection'
