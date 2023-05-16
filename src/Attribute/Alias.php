@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_alias.
  *
- * (c) 2012-2021 The MetaModels team.
+ * (c) 2012-2023 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -19,7 +19,7 @@
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @author     Richard Henkenjohann <richardhenkenjohann@googlemail.com>
- * @copyright  2012-2021 The MetaModels team.
+ * @copyright  2012-2023 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_alias/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -207,9 +207,13 @@ class Alias extends BaseSimple
             $this->get('noIntegerPrefix') ? '' : 'id-'
         );
 
-        if (\is_numeric($slug[0]) && !$this->get('validAliasCharacters') && !$this->get('noIntegerPrefix')) {
+        if ('' !== $slug
+            && \is_numeric($slug[0])
+            && !$this->get('validAliasCharacters')
+            && !$this->get('noIntegerPrefix'))
+        {
             // BC mode. In prior versions, StringUtil::standardize was used to generate the alias
-            // which always added an prefix for aliases starting with a number.
+            // which always added a prefix for aliases starting with a number.
             $slug = 'id-' . $slug;
         }
 
