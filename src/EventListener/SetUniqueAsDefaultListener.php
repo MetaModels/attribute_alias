@@ -21,6 +21,7 @@ namespace MetaModels\AttributeAliasBundle\EventListener;
 
 use ContaoCommunityAlliance\DcGeneral\Contao\RequestScopeDeterminator;
 use ContaoCommunityAlliance\DcGeneral\Contao\View\Contao2BackendView\Event\BuildWidgetEvent;
+use ContaoCommunityAlliance\DcGeneral\DataDefinition\ContainerInterface;
 
 /**
  * This class provides the attribute unique as default.
@@ -56,10 +57,14 @@ class SetUniqueAsDefaultListener
     {
         $model = $event->getModel();
 
-        if (false === $this->scopeDeterminator->currentScopeIsBackend()
+        $dataDefinition = $event->getEnvironment()->getDataDefinition();
+        assert($dataDefinition instanceof ContainerInterface);
+
+        if (
+            false === $this->scopeDeterminator->currentScopeIsBackend()
             || null !== $model->getId()
             || 'alias' !== $model->getProperty('type')
-            || 'tl_metamodel_attribute' !== $event->getEnvironment()->getDataDefinition()->getName()
+            || 'tl_metamodel_attribute' !== $dataDefinition->getName()
             || 'isunique' !== $event->getProperty()->getName()
         ) {
             return;
