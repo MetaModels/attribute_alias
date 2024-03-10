@@ -21,7 +21,6 @@ namespace MetaModels\AttributeAliasBundle\DependencyInjection\CompilerPass;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * This pass adds the tagged factories to the MetaModels factories.
