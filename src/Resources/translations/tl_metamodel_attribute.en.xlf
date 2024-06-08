@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext"
+        original="src/Resources/translations/en.xlf">
+    <body>
+      <trans-unit id="display_legend" resname="display_legend">
+        <source>Display settings</source>
+      </trans-unit>
+      <trans-unit id="typeOptions.alias" resname="typeOptions.alias">
+        <source>Alias</source>
+      </trans-unit>
+      <trans-unit id="slugLocale.label" resname="slugLocale.label">
+        <source>Convert language</source>
+      </trans-unit>
+      <trans-unit id="slugLocale.description" resname="slugLocale.description">
+        <source>Please enter the language to convert alias characters according to the ISO-639-1 standard (e.g. "en" for English or "en-US" for American English).</source>
+      </trans-unit>
+      <trans-unit id="noIntegerPrefix.label" resname="noIntegerPrefix.label">
+        <source>No integer prefix</source>
+      </trans-unit>
+      <trans-unit id="noIntegerPrefix.description" resname="noIntegerPrefix.description">
+        <source>Do not set an "id-" prefix if the resulting alias is numeric.</source>
+      </trans-unit>
+      <trans-unit id="alias_prefix.label" resname="alias_prefix.label">
+        <source>Alias prefix</source>
+      </trans-unit>
+      <trans-unit id="alias_prefix.description" resname="alias_prefix.description">
+        <source>Optionally add a prefix term.</source>
+      </trans-unit>
+      <trans-unit id="alias_postfix.label" resname="alias_postfix.label">
+        <source>Alias postfix</source>
+      </trans-unit>
+      <trans-unit id="alias_postfix.description" resname="alias_postfix.description">
+        <source>Optionally add a postfix term.</source>
+      </trans-unit>
+      <trans-unit id="alias_fields.label" resname="alias_fields.label">
+        <source>Alias fields</source>
+      </trans-unit>
+      <trans-unit id="alias_fields.description" resname="alias_fields.description">
+        <source>Please select one or more attributes to combine a alias.</source>
+      </trans-unit>
+      <trans-unit id="field_attribute" resname="field_attribute">
+        <source>Attributes</source>
+      </trans-unit>
+      <trans-unit id="force_alias.label" resname="force_alias.label">
+        <source>Force alias regenerating</source>
+      </trans-unit>
+      <trans-unit id="force_alias.description" resname="force_alias.description">
+        <source>Check this, if you want the alias to be regenerated whenever any of the dependant fields is changed. Note that this will invalidate old urls that are based upon the alias.</source>
+      </trans-unit>
+      <trans-unit id="validAliasCharacters.label" resname="validAliasCharacters.label">
+        <source>Valid alias characters</source>
+      </trans-unit>
+      <trans-unit id="validAliasCharacters.description" resname="validAliasCharacters.description">
+        <source>Here you can select a custom character set for auto-generated aliases.</source>
+      </trans-unit>
+      <trans-unit id="select_values.meta" resname="select_values.meta">
+        <source>Metafields</source>
+      </trans-unit>
+      <trans-unit id="select_values.attributes" resname="select_values.attributes">
+        <source>Attributes</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
