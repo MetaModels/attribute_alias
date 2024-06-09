@@ -80,6 +80,8 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['slugLocale'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['noIntegerPrefix'] = [
+    'label'       => 'noIntegerPrefix.label',
+    'description' => 'noIntegerPrefix.description',
     'exclude'   => true,
     'inputType' => 'checkbox',
     'default'   => '1',
@@ -91,7 +93,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['noIntegerPrefix'] = [
 
 $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['alias_prefix'] = [
     'label'       => 'alias_prefix.label',
-    'description' => 'slugLocale.description',
+    'description' => 'alias_prefix.description',
     'exclude'     => true,
     'inputType'   => 'text',
     'sql'         => 'varchar(255) NOT NULL default \'\'',
