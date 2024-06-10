@@ -60,6 +60,9 @@
       <trans-unit id="select_values.attributes" resname="select_values.attributes">
         <source>Attributes</source>
       </trans-unit>
+      <trans-unit id="field_attribute.label" resname="field_attribute.label">
+        <source>Attributes</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>
