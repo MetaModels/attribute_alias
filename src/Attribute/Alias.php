@@ -212,8 +212,12 @@ class Alias extends BaseSimple
                 if (!$this->get('isunique')) {
                     return false;
                 }
+                $result = $this->searchFor($alias);
+                if (null === $result) {
+                    return true;
+                }
 
-                return [] !== \array_diff($this->searchFor($alias), [$itemId]);
+                return [] !== \array_diff($result, [$itemId]);
             },
             $this->get('noIntegerPrefix') ? '' : 'id-'
         );
