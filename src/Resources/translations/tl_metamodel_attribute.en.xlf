@@ -38,9 +38,6 @@
       <trans-unit id="alias_fields.description" resname="alias_fields.description">
         <source>Please select one or more attributes to combine a alias.</source>
       </trans-unit>
-      <trans-unit id="field_attribute" resname="field_attribute">
-        <source>Attributes</source>
-      </trans-unit>
       <trans-unit id="force_alias.label" resname="force_alias.label">
         <source>Force alias regenerating</source>
       </trans-unit>
@@ -61,6 +58,24 @@
       </trans-unit>
       <trans-unit id="field_attribute.label" resname="field_attribute.label">
         <source>Attributes</source>
+      </trans-unit>
+      <trans-unit id="select_values.id" resname="select_values.id">
+        <source>ID</source>
+      </trans-unit>
+      <trans-unit id="select_values.pid" resname="select_values.pid">
+        <source>PID</source>
+      </trans-unit>
+      <trans-unit id="select_values.sorting" resname="select_values.sorting">
+        <source>Sorting</source>
+      </trans-unit>
+      <trans-unit id="select_values.tstamp" resname="select_values.tstamp">
+        <source>Timestamp</source>
+      </trans-unit>
+      <trans-unit id="select_values.vargroup" resname="select_values.vargroup">
+        <source>Vargroup</source>
+      </trans-unit>
+      <trans-unit id="select_values.varbase" resname="select_values.varbase">
+        <source>Varbase</source>
       </trans-unit>
     </body>
   </file>
