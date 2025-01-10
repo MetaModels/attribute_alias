@@ -156,6 +156,7 @@ class Alias extends BaseSimple
         if ($this->get('force_alias')) {
             $arrFieldDef['eval']['alwaysSave'] = true;
             $arrFieldDef['eval']['readonly']   = true;
+            $arrFieldDef['eval']['doNotCopy']  = true;
         }
 
         return $arrFieldDef;
@@ -260,6 +261,14 @@ class Alias extends BaseSimple
                 $parts[]   = $arrValues['text'];
             }
         }
+
+        // TODO: Check if tihs is working....
+        // Clean empty values.
+//        \array_filter
+//        (
+//            $parts,
+//            callback: static fn($value): bool => ($value !== null && $value !== '')
+//        );
 
         if (!empty($this->get('alias_postfix'))) {
             $parts[] = $this->get('alias_postfix');
