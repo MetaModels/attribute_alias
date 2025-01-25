@@ -111,6 +111,16 @@ class SetDefaultValuesAtCheckboxesListener
         $dataDefinition = $event->getEnvironment()->getDataDefinition();
         assert($dataDefinition instanceof ContainerInterface);
 
+        // Next check only if 'isvariant' not checked and MetaModel is variant.
+        if (
+            false === $this->scopeDeterminator->currentScopeIsBackend()
+            || 'alias' !== $model->getProperty('type')
+            || 'tl_metamodel_attribute' !== $dataDefinition->getName()
+        ) {
+            return;
+        }
+
+
         $metaModelId = $model->getProperty('pid');
         if (!$metaModelId) {
             $inputProvider = $event->getEnvironment()->getInputProvider();
@@ -122,12 +132,8 @@ class SetDefaultValuesAtCheckboxesListener
         $metaModel     = $this->factory->getMetaModel($metaModelName);
         assert($metaModel instanceof IMetaModel);
 
-        // Next check only if 'isvariant' not checked and MetaModel is variant.
         if (
-            false === $this->scopeDeterminator->currentScopeIsBackend()
-            || 'alias' !== $model->getProperty('type')
-            || 'tl_metamodel_attribute' !== $dataDefinition->getName()
-            || !$metaModel->hasVariants()
+            !$metaModel->hasVariants()
             || $model->getProperty('isvariant')
         ) {
             return;
