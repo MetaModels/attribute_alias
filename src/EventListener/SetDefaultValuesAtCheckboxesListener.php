@@ -22,6 +22,7 @@ namespace MetaModels\AttributeAliasBundle\EventListener;
 use ContaoCommunityAlliance\DcGeneral\Contao\RequestScopeDeterminator;
 use ContaoCommunityAlliance\DcGeneral\Contao\View\Contao2BackendView\Event\BuildWidgetEvent;
 use ContaoCommunityAlliance\DcGeneral\Data\ModelId;
+use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface;
 use ContaoCommunityAlliance\DcGeneral\DataDefinition\ContainerInterface;
 use ContaoCommunityAlliance\DcGeneral\Event\ValidateModelEvent;
 use ContaoCommunityAlliance\DcGeneral\InputProviderInterface;
@@ -110,11 +111,23 @@ class SetDefaultValuesAtCheckboxesListener
         $dataDefinition = $event->getEnvironment()->getDataDefinition();
         assert($dataDefinition instanceof ContainerInterface);
 
-        // Next check only if 'isvariant' not checked.
+        $metaModelId = $model->getProperty('pid');
+        if (!$metaModelId) {
+            $inputProvider = $event->getEnvironment()->getInputProvider();
+            assert($inputProvider instanceof InputProviderInterface);
+            $metaModelId = ModelId::fromSerialized($inputProvider->getParameter('pid'))->getId();
+        }
+
+        $metaModelName = $this->factory->translateIdToMetaModelName($metaModelId);
+        $metaModel     = $this->factory->getMetaModel($metaModelName);
+        assert($metaModel instanceof IMetaModel);
+
+        // Next check only if 'isvariant' not checked and MetaModel is variant.
         if (
             false === $this->scopeDeterminator->currentScopeIsBackend()
             || 'alias' !== $model->getProperty('type')
             || 'tl_metamodel_attribute' !== $dataDefinition->getName()
+            || !$metaModel->hasVariants()
             || $model->getProperty('isvariant')
         ) {
             return;
