@@ -47,9 +47,6 @@
       <trans-unit id="force_alias.description" resname="force_alias.description">
         <source>Check this, if you want the alias to be regenerated whenever any of the dependant fields is changed. Note that this will invalidate old urls that are based upon the alias.</source>
       </trans-unit>
-      <trans-unit id="force_alias.variant_error" resname="force_alias.variant_error">
-        <source>The option "Force alias" can only be used for variants. It cannot be used for parent elements, as the value is copied to all child elements and a check for uniqueness results in an error.</source>
-      </trans-unit>
       <trans-unit id="validAliasCharacters.label" resname="validAliasCharacters.label">
         <source>Valid alias characters</source>
       </trans-unit>

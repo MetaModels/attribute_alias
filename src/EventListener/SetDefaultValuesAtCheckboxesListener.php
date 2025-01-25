@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_alias.
  *
- * (c) 2012-2023 The MetaModels team.
+ * (c) 2012-2025 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,7 +12,7 @@
  *
  * @package    MetaModels/attribute_alias
  * @author     Ingolf Steinhardt <info@e-spin.de>
- * @copyright  2012-2023 The MetaModels team.
+ * @copyright  2012-2025 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_alias/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -97,7 +97,7 @@ class SetDefaultValuesAtCheckboxesListener
     }
 
     /**
-     * Check valid combination of checkboxes 'isvariant' with 'isunique' and 'force_alias'.
+     * Check valid combination of checkboxes 'isvariant' with 'isunique'.
      *
      * @param ValidateModelEvent $event The event.
      *
@@ -123,11 +123,6 @@ class SetDefaultValuesAtCheckboxesListener
         if ($model->getProperty('isunique')) {
             $errorMessage = $this->translator->trans('isunique.variant_error', [], 'tl_metamodel_attribute');
             $event->getPropertyValueBag()->markPropertyValueAsInvalid('isunique', [$errorMessage]);
-        }
-
-        if ($model->getProperty('force_alias')) {
-            $errorMessage = $this->translator->trans('force_alias.variant_error', [], 'tl_metamodel_attribute');
-            $event->getPropertyValueBag()->markPropertyValueAsInvalid('force_alias', [$errorMessage]);
         }
     }
 }

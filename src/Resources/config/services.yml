@@ -36,7 +36,7 @@ services:
         tags:
             - name: contao.migration
 
-    MetaModels\AttributeAliasBundle\Migration\FindUniqueOrForceInVariantsMigration:
+    MetaModels\AttributeAliasBundle\Migration\FindUniqueInVariantsMigration:
       arguments:
         - '@database_connection'
       tags:

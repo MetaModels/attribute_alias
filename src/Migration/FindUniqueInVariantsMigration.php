@@ -33,9 +33,9 @@ use function implode;
 use function sprintf;
 
 /**
- * This migration find unsupported combination of variant with isunique or force_alias and write a notice.
+ * This migration find unsupported combination of variant with isunique and write a notice.
  */
-class FindUniqueOrForceInVariantsMigration extends AbstractMigration
+class FindUniqueInVariantsMigration extends AbstractMigration
 {
     /** @var list<string> */
     private array $existsCache = [];
@@ -52,12 +52,12 @@ class FindUniqueOrForceInVariantsMigration extends AbstractMigration
      */
     public function getName(): string
     {
-        return 'Find unsupported combination of options variant with unique or force alias.';
+        return 'Find unsupported combination of option variant with unique.';
     }
 
     /**
      * Must only run if:
-     * - find unsupported combination of variant with isunique or force_alias.
+     * - find unsupported combination of variant with isunique.
      *
      * @return bool
      */
@@ -75,7 +75,7 @@ class FindUniqueOrForceInVariantsMigration extends AbstractMigration
     }
 
     /**
-     * Find unsupported combination of variant with isunique or force_alias.
+     * Find unsupported combination of variant with isunique.
      *
      * @return MigrationResult
      */
@@ -84,9 +84,11 @@ class FindUniqueOrForceInVariantsMigration extends AbstractMigration
         if (($modleList = $this->findUniqueOrForceInVariants())) {
             return new MigrationResult(
                 false,
-                sprintf('We find unsupported combination of variant with isunique or force_alias in models: %s  ' .
-                '- please check settings of attribute alias. ' .
-                'This CAN NOT be done automatically!', $modleList)
+                sprintf(
+                    'We find unsupported combination of variant with unique in models:' . PHP_EOL .
+                    '%s Please check settings of attribute alias. This CAN NOT be done automatically!',
+                    $modleList
+                )
             );
         }
 
@@ -109,7 +111,7 @@ class FindUniqueOrForceInVariantsMigration extends AbstractMigration
             ->where('metamodel.varsupport=1')
             ->andWhere('attribute.type=:type')
             ->andWhere('attribute.isvariant!=1 ')
-            ->andwhere('attribute.isunique=1 OR attribute.force_alias=1')
+            ->andwhere('attribute.isunique=1')
             ->setParameter('type', 'alias')
             ->groupBy('metamodel.id')
             ->executeQuery()
@@ -117,7 +119,7 @@ class FindUniqueOrForceInVariantsMigration extends AbstractMigration
 
         $result = [];
         foreach ($poorCombinations as $poorCombination) {
-            $result[] = sprintf('"%s" [%s]', $poorCombination['name'], $poorCombination['tableName']);
+            $result[] = sprintf(' - "%s" [%s]' . PHP_EOL, $poorCombination['name'], $poorCombination['tableName']);
         }
 
         return implode(', ', $result);
