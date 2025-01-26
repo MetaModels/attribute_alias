@@ -31,15 +31,12 @@ use MetaModels\IMetaModel;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * This class provides the attribute unique as default.
+ * This class provides the attribute unique as default and check valid combination of checkboxes.
  */
 class SetDefaultValuesAtCheckboxesListener
 {
     /**
      * Create a new instance.
-     *
-     * @param RequestScopeDeterminator $scopeDeterminator The scope determinator.
-     * @param IFactory                 $factory           Metamodels factory.
      */
     public function __construct(
         private readonly RequestScopeDeterminator $scopeDeterminator,
@@ -114,7 +111,6 @@ class SetDefaultValuesAtCheckboxesListener
         ) {
             return;
         }
-
 
         $metaModelId = $model->getProperty('pid');
         if (!$metaModelId) {
