@@ -86,7 +86,7 @@ class FindUniqueInVariantsMigration extends AbstractMigration
                 false,
                 sprintf(
                     'We find unsupported combination of variant with unique in models:' . PHP_EOL .
-                    '%s Please check settings of attribute alias. This CAN NOT be done automatically!',
+                    '%s Please check settings of attribute "Alias". This CAN NOT be done automatically!',
                     $modleList
                 )
             );
