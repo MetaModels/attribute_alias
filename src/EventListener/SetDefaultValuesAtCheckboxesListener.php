@@ -71,15 +71,8 @@ class SetDefaultValuesAtCheckboxesListener
             return;
         }
 
-        // Set unique default as true.
-        if ('isunique' === $event->getProperty()->getName()) {
-            $model->setProperty('isunique', true);
-
-            return;
-        }
-
-        // Set force alias default as true - only for not-variant models.
-        if ('force_alias' === $event->getProperty()->getName()) {
+        // Set isunique and force alias default as true - only for not-variant models.
+        if ('isunique' === $event->getProperty()->getName() || 'force_alias' === $event->getProperty()->getName()) {
             $metaModelId = $model->getProperty('pid');
             if (!$metaModelId) {
                 $inputProvider = $event->getEnvironment()->getInputProvider();
@@ -92,13 +85,15 @@ class SetDefaultValuesAtCheckboxesListener
             assert($metaModel instanceof IMetaModel);
 
             if (!$metaModel->hasVariants()) {
+                $model->setProperty('isunique', true);
                 $model->setProperty('force_alias', true);
             }
         }
     }
 
     /**
-     * Check valid combination of checkboxes 'isvariant' with 'isunique'.
+     * Check valid combination of checkboxes 'isvariant' with 'isunique' -
+     * combination of active options 'isvariant' with 'isunique' is not supportet.
      *
      * @param ValidateModelEvent $event The event.
      *
