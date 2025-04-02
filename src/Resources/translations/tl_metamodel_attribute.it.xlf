@@ -1,9 +1,9 @@
 <?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="en" datatype="plaintext" original="src/Resources/translations/tl_metamodel_attribute.en.xlf" target-language="fr">
+  <file source-language="en" datatype="plaintext" original="src/Resources/translations/tl_metamodel_attribute.en.xlf" target-language="it">
     <body>
       <trans-unit id="display_legend" resname="display_legend">
         <source>Display settings</source>
-        <target>Afficher les réglages</target>
+        <target>Impostazioni di visualizzazione</target>
       </trans-unit>
       <trans-unit id="typeOptions.alias" resname="typeOptions.alias">
         <source>Alias</source>
@@ -11,71 +11,71 @@
       </trans-unit>
       <trans-unit id="slugLocale.label" resname="slugLocale.label">
         <source>Convert language</source>
-        <target>Convertir la langue</target>
+        <target>Traduci in lingua</target>
       </trans-unit>
       <trans-unit id="slugLocale.description" resname="slugLocale.description">
         <source>Please enter the language to convert alias characters according to the ISO-639-1 standard (e.g. &quot;en&quot; for English or &quot;en-US&quot; for American English).</source>
-        <target>Veuillez indiquer la langue pour convertir les caractères d'alias conformément au standard ISO-639-1 (ex: &quot;en&quot; pour English ou &quot;en-US&quot; pour American English).</target>
+        <target>Inserisci la lingua in cui convertire i caratteri alias secondo lo standard ISO-639-1 (ad esempio &quot;en&quot; per l'inglese o &quot;en-US&quot; per l'inglese americano).</target>
       </trans-unit>
       <trans-unit id="noIntegerPrefix.label" resname="noIntegerPrefix.label">
         <source>No integer prefix</source>
-        <target>Pas d'integer dans le préfixe.</target>
+        <target>Non utilizzare numeri come prefisso</target>
       </trans-unit>
       <trans-unit id="noIntegerPrefix.description" resname="noIntegerPrefix.description">
         <source>Do not set an &quot;id-&quot; prefix if the resulting alias is numeric.</source>
-        <target>Ne pas définir un préfixe avec &quot;ID-&quot; si l'alias est numérique</target>
+        <target>Non impostare il prefisso &quot;id-&quot; se l'alias risultante è numerico.</target>
       </trans-unit>
       <trans-unit id="alias_prefix.label" resname="alias_prefix.label">
         <source>Alias prefix</source>
-        <target>Préfixe d'alias</target>
+        <target>Prefisso alias</target>
       </trans-unit>
       <trans-unit id="alias_prefix.description" resname="alias_prefix.description">
         <source>Optionally add a prefix term.</source>
-        <target>Ajouter un préfixe optionnel</target>
+        <target>In modo facoltativo, indica un termine prefisso da aggiungere.</target>
       </trans-unit>
       <trans-unit id="alias_postfix.label" resname="alias_postfix.label">
         <source>Alias postfix</source>
-        <target>Postfixe d'alias</target>
+        <target>Postfisso alias</target>
       </trans-unit>
       <trans-unit id="alias_postfix.description" resname="alias_postfix.description">
         <source>Optionally add a postfix term.</source>
-        <target>Ajouter un terme postfixe optionnel</target>
+        <target>In modo facoltativo, indica un termine postfisso da aggiungere.</target>
       </trans-unit>
       <trans-unit id="alias_fields.label" resname="alias_fields.label">
         <source>Alias fields</source>
-        <target>Champs d'alias</target>
+        <target>Campi alias</target>
       </trans-unit>
       <trans-unit id="alias_fields.description" resname="alias_fields.description">
         <source>Please select one or more attributes to combine a alias.</source>
-        <target>Choisissez le ou les attributs à combiner pour former l'alias</target>
+        <target>Seleziona uno o più attributi per creare un alias.</target>
       </trans-unit>
       <trans-unit id="force_alias.label" resname="force_alias.label">
         <source>Force alias regenerating</source>
-        <target>Forcer la régénration de l'alias</target>
+        <target>Forza la rigenerazione dell'alias</target>
       </trans-unit>
       <trans-unit id="force_alias.description" resname="force_alias.description">
         <source>Check this, if you want the alias to be regenerated whenever any of the dependant fields is changed. Note that this will invalidate old urls that are based upon the alias.</source>
-        <target>Cocher cette case pour que l'alias soit recréé à chaque fois que le contenu d'un des champs qui le composent est modifié. Ça peut rendre invalides les anciennes urls qui sont basées sur l'alias.</target>
+        <target>Seleziona questa opzione se vuoi che l'alias venga rigenerato ogni volta che uno qualsiasi dei campi dipendenti viene modificato. Nota che questo invaliderà i vecchi URL basati sull'alias.</target>
       </trans-unit>
       <trans-unit id="validAliasCharacters.label" resname="validAliasCharacters.label">
         <source>Valid alias characters</source>
-        <target>Caractères autorisés pour l'alias</target>
+        <target>Caratteri validi per l'alias </target>
       </trans-unit>
       <trans-unit id="validAliasCharacters.description" resname="validAliasCharacters.description">
         <source>Here you can select a custom character set for auto-generated aliases.</source>
-        <target>Vous pouvez sélectionner le jeu de caractères autorisés pour es alias auto-générés.</target>
+        <target>Qui puoi selezionare un set di caratteri personalizzato per gli alias generati automaticamente.</target>
       </trans-unit>
       <trans-unit id="select_values.meta" resname="select_values.meta">
         <source>Metafields</source>
-        <target>Champs meta</target>
+        <target>Metacampi</target>
       </trans-unit>
       <trans-unit id="select_values.attributes" resname="select_values.attributes">
         <source>Attributes</source>
-        <target>Attributs</target>
+        <target>Attributi</target>
       </trans-unit>
       <trans-unit id="field_attribute.label" resname="field_attribute.label">
         <source>Attributes</source>
-        <target>Attributs</target>
+        <target>Attributi</target>
       </trans-unit>
       <trans-unit id="select_values.id" resname="select_values.id">
         <source>ID</source>
@@ -87,7 +87,7 @@
       </trans-unit>
       <trans-unit id="select_values.sorting" resname="select_values.sorting">
         <source>Sorting</source>
-        <target>Tri</target>
+        <target>Ordinamento</target>
       </trans-unit>
       <trans-unit id="select_values.tstamp" resname="select_values.tstamp">
         <source>Timestamp</source>
@@ -103,39 +103,39 @@
       </trans-unit>
       <trans-unit id="validAliasCharacters_headline" resname="validAliasCharacters_headline">
         <source>Supported character sets that can be used when generating alias values.</source>
-        <target>Ensembles de caractères autorisés dans les alias.</target>
+        <target>Set di caratteri supportati che possono essere utilizzati durante la generazione di valori alias.</target>
       </trans-unit>
       <trans-unit id="validAliasCharacters_unicode_nsl.caption" resname="validAliasCharacters_unicode_nsl.caption">
         <source>Unicode numbers and small letters</source>
-        <target>Unicode : nombres et lettres minuscules.</target>
+        <target>Numeri unicode e lettere minuscole</target>
       </trans-unit>
       <trans-unit id="validAliasCharacters_unicode_nsl.description" resname="validAliasCharacters_unicode_nsl.description">
         <source>From the page name &quot;Über uns&quot; the alias &quot;über-uns&quot; is generated.</source>
-        <target>Si le nom de la page est &quot;Über uns&quot; l'alias généré sera &quot;über-uns&quot;.</target>
+        <target>Per una pagina denominata &quot;Informazioni sulla città&quot; viene generato l'alias &quot;informazioni-sulla-città&quot;.</target>
       </trans-unit>
       <trans-unit id="validAliasCharacters_unicode_nl.caption" resname="validAliasCharacters_unicode_nl.caption">
         <source>Unicode numbers and letters</source>
-        <target>Unicode nombres et lettres</target>
+        <target>Numeri e lettere unicode</target>
       </trans-unit>
       <trans-unit id="validAliasCharacters_unicode_nl.description" resname="validAliasCharacters_unicode_nl.description">
         <source>From the page name &quot;Über uns&quot; the alias &quot;Über-uns&quot; is generated.</source>
-        <target>Si le nom de la page est &quot;Über uns&quot; l'alias généré sera &quot;über-uns&quot;.</target>
+        <target>Per una pagina denominata &quot;Informazioni sulla città&quot; viene generato l'alias &quot;Informazioni-sulla-città&quot;.</target>
       </trans-unit>
       <trans-unit id="validAliasCharacters_ascii_nsl.caption" resname="validAliasCharacters_ascii_nsl.caption">
         <source>ASCII numbers and small letters</source>
-        <target>ASCII nombres et et lettres minuscules.</target>
+        <target>Numeri ASCII e lettere minuscole</target>
       </trans-unit>
       <trans-unit id="validAliasCharacters_ascii_nsl.description" resname="validAliasCharacters_ascii_nsl.description">
         <source>From the page name &quot;Über uns&quot; the alias &quot;ueber-uns&quot; is generated.</source>
-        <target>Si le nom de la page est &quot;Über uns&quot; l'alias généré sera &quot;ueber-uns&quot;.</target>
+        <target>Per una pagina denominata &quot;Informazioni sulla città&quot; viene generato l'alias &quot;informazioni-sulla-citta&quot;.</target>
       </trans-unit>
       <trans-unit id="validAliasCharacters_ascii_nl.caption" resname="validAliasCharacters_ascii_nl.caption">
         <source>ASCII numbers and letters</source>
-        <target>ASCII  nombres et lettres</target>
+        <target>Numeri e lettere ASCII</target>
       </trans-unit>
       <trans-unit id="validAliasCharacters_ascii_nl.description" resname="validAliasCharacters_ascii_nl.description">
         <source>From the page name &quot;Über uns&quot; the alias &quot;Ueber-uns&quot; is generated.</source>
-        <target>Si le nom de la page est &quot;Über uns&quot; l'alias généré sera &quot;ueber-uns&quot;.</target>
+        <target>Per una pagina denominata &quot;Informazioni sulla città&quot; viene generato l'alias &quot;Informazioni-sulla-citta&quot;.</target>
       </trans-unit>
     </body>
   </file>
