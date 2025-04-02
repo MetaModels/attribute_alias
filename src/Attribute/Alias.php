@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_alias.
  *
- * (c) 2012-2021 The MetaModels team.
+ * (c) 2012-2025 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -19,7 +19,7 @@
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @author     Richard Henkenjohann <richardhenkenjohann@googlemail.com>
- * @copyright  2012-2021 The MetaModels team.
+ * @copyright  2012-2025 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_alias/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -43,51 +43,72 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class Alias extends BaseSimple
 {
-
     /**
      * The Contao slug generator.
      *
      * @var SlugGenerator
      */
-    private $slugGenerator;
+    private SlugGenerator $slugGenerator;
 
     /**
-     * The event dispatcher.
+     * The event eventDispatcher.
      *
      * @var EventDispatcherInterface
      */
-    private $dispatcher;
+    private EventDispatcherInterface $eventDispatcher;
 
     /**
      * {@inheritDoc}
      */
     public function __construct(
         IMetaModel $objMetaModel,
-        $arrData = [],
+        array $arrData = [],
         Connection $connection = null,
         TableManipulator $tableManipulator = null,
-        EventDispatcherInterface $dispatcher = null,
+        EventDispatcherInterface $eventDispatcher = null,
         SlugGenerator $slugGenerator = null
     ) {
         parent::__construct($objMetaModel, $arrData, $connection, $tableManipulator);
 
         if (null === $slugGenerator) {
+            // @codingStandardsIgnoreStart
+            @trigger_error(
+                'SlugGenerator is missing. It has to be passed in the constructor. Fallback will be dropped.',
+                E_USER_DEPRECATED
+            );
+            // @codingStandardsIgnoreEnd
             $slugGenerator = System::getContainer()->get('contao.slug');
+            assert($slugGenerator instanceof SlugGenerator);
         }
-
-        if (null === $dispatcher) {
-            $dispatcher = System::getContainer()->get('event_dispatcher');
-        }
-
-        $this->dispatcher    = $dispatcher;
         $this->slugGenerator = $slugGenerator;
+
+        if (null === $eventDispatcher) {
+            // @codingStandardsIgnoreStart
+            @trigger_error(
+                'Event dispatcher is missing. It has to be passed in the constructor. Fallback will be dropped.',
+                E_USER_DEPRECATED
+            );
+            // @codingStandardsIgnoreEnd
+            $eventDispatcher = System::getContainer()->get('event_dispatcher');
+            assert($eventDispatcher instanceof EventDispatcherInterface);
+        }
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
      * {@inheritDoc}
+     *
+     * @deprecated Do not use.
      */
     public function getSQLDataType()
     {
+        // @codingStandardsIgnoreStart
+        @trigger_error(
+            'Class "' . __CLASS__ . '" is a managed attribute you should not call "' . __METHOD__ . '".',
+            E_USER_DEPRECATED
+        );
+        // @codingStandardsIgnoreEnd
+
         return 'varchar(255) NULL';
     }
 
@@ -135,6 +156,7 @@ class Alias extends BaseSimple
         if ($this->get('force_alias')) {
             $arrFieldDef['eval']['alwaysSave'] = true;
             $arrFieldDef['eval']['readonly']   = true;
+            $arrFieldDef['eval']['doNotCopy']  = true;
         }
 
         return $arrFieldDef;
@@ -167,7 +189,6 @@ class Alias extends BaseSimple
      * Generate a slug from the alias.
      *
      * @param string $alias  The alias.
-     *
      * @param string $itemId The item id to check for duplicates.
      *
      * @return string The generated slug.
@@ -175,7 +196,7 @@ class Alias extends BaseSimple
     private function generateSlug(string $alias, string $itemId): string
     {
         $replaceEvent = new ReplaceInsertTagsEvent($alias);
-        $this->dispatcher->dispatch($replaceEvent, ContaoEvents::CONTROLLER_REPLACE_INSERT_TAGS);
+        $this->eventDispatcher->dispatch($replaceEvent, ContaoEvents::CONTROLLER_REPLACE_INSERT_TAGS);
 
         $slugOptions = ['locale' => ($this->get('slugLocale') ?? '')];
 
@@ -192,15 +213,24 @@ class Alias extends BaseSimple
                 if (!$this->get('isunique')) {
                     return false;
                 }
+                $result = $this->searchFor($alias);
+                if (null === $result) {
+                    return true;
+                }
 
-                return [] !== \array_diff($this->searchFor($alias), [$itemId]);
+                return [] !== \array_diff($result, [$itemId]);
             },
             $this->get('noIntegerPrefix') ? '' : 'id-'
         );
 
-        if (\is_numeric($slug[0]) && !$this->get('validAliasCharacters') && !$this->get('noIntegerPrefix')) {
+        if (
+            '' !== $slug
+            && \is_numeric($slug[0])
+            && !$this->get('validAliasCharacters')
+            && !$this->get('noIntegerPrefix')
+        ) {
             // BC mode. In prior versions, StringUtil::standardize was used to generate the alias
-            // which always added an prefix for aliases starting with a number.
+            // which always added a prefix for aliases starting with a number.
             $slug = 'id-' . $slug;
         }
 

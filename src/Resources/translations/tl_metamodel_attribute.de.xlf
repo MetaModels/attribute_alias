@@ -1,0 +1,106 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="src/Resources/translations/tl_metamodel_attribute.en.xlf" target-language="de">
+    <body>
+      <trans-unit id="display_legend" resname="display_legend">
+        <source>Display settings</source>
+        <target>Anzeigeeinstellungen</target>
+      </trans-unit>
+      <trans-unit id="typeOptions.alias" resname="typeOptions.alias">
+        <source>Alias</source>
+        <target>Alias</target>
+      </trans-unit>
+      <trans-unit id="slugLocale.label" resname="slugLocale.label">
+        <source>Convert language</source>
+        <target>Konvertierungssprache</target>
+      </trans-unit>
+      <trans-unit id="slugLocale.description" resname="slugLocale.description">
+        <source>Please enter the language to convert alias characters according to the ISO-639-1 standard (e.g. &quot;en&quot; for English or &quot;en-US&quot; for American English).</source>
+        <target>Bitte geben Sie die Sprache an, in die die Alias-Zeichen nach dem ISO-639-1-Standard umgewandelt werden sollen (z. B. &quot;en&quot; für Englisch oder &quot;en-US&quot; für amerikanisches Englisch).</target>
+      </trans-unit>
+      <trans-unit id="noIntegerPrefix.label" resname="noIntegerPrefix.label">
+        <source>No integer prefix</source>
+        <target>Kein Integer-Präfix</target>
+      </trans-unit>
+      <trans-unit id="noIntegerPrefix.description" resname="noIntegerPrefix.description">
+        <source>Do not set an &quot;id-&quot; prefix if the resulting alias is numeric.</source>
+        <target>Setzt kein &quot;id-&quot;-Präfix, wenn der resultierende Alias numerisch ist.</target>
+      </trans-unit>
+      <trans-unit id="alias_prefix.label" resname="alias_prefix.label">
+        <source>Alias prefix</source>
+        <target>Alias-Präfix</target>
+      </trans-unit>
+      <trans-unit id="alias_prefix.description" resname="alias_prefix.description">
+        <source>Optionally add a prefix term.</source>
+        <target>Optionale Angabe eines Präfix für die Erstellung des Alias.</target>
+      </trans-unit>
+      <trans-unit id="alias_postfix.label" resname="alias_postfix.label">
+        <source>Alias postfix</source>
+        <target>Alias-Postfix</target>
+      </trans-unit>
+      <trans-unit id="alias_postfix.description" resname="alias_postfix.description">
+        <source>Optionally add a postfix term.</source>
+        <target>Optionale Angabe eines Postfix für die Erstellung des Alias.</target>
+      </trans-unit>
+      <trans-unit id="alias_fields.label" resname="alias_fields.label">
+        <source>Alias fields</source>
+        <target>Alias-Felder</target>
+      </trans-unit>
+      <trans-unit id="alias_fields.description" resname="alias_fields.description">
+        <source>Please select one or more attributes to combine a alias.</source>
+        <target>Bitte wählen Sie eines oder mehrere Attribute, um daraus einen Alias zu bilden.</target>
+      </trans-unit>
+      <trans-unit id="force_alias.label" resname="force_alias.label">
+        <source>Force alias regenerating</source>
+        <target>Neuerstellung des Alias erzwingen</target>
+      </trans-unit>
+      <trans-unit id="force_alias.description" resname="force_alias.description">
+        <source>Check this, if you want the alias to be regenerated whenever any of the dependant fields is changed. Note that this will invalidate old urls that are based upon the alias.</source>
+        <target>Auswählen, um eine Neuerstellung des Alias zu erzwingen, wenn sich eines der abhängigen Felder ändert. Beachten Sie, dass bisherige URLs dadurch ungültig werden können.</target>
+      </trans-unit>
+      <trans-unit id="validAliasCharacters.label" resname="validAliasCharacters.label">
+        <source>Valid alias characters</source>
+        <target>Gültige Alias-Zeichen</target>
+      </trans-unit>
+      <trans-unit id="validAliasCharacters.description" resname="validAliasCharacters.description">
+        <source>Here you can select a custom character set for auto-generated aliases.</source>
+        <target>Hier können Sie einen benutzerdefinierten Zeichensatz für automatisch generierte Aliase auswählen.</target>
+      </trans-unit>
+      <trans-unit id="select_values.meta" resname="select_values.meta">
+        <source>Metafields</source>
+        <target>Metafelder</target>
+      </trans-unit>
+      <trans-unit id="select_values.attributes" resname="select_values.attributes">
+        <source>Attributes</source>
+        <target>Attribute</target>
+      </trans-unit>
+      <trans-unit id="field_attribute.label" resname="field_attribute.label">
+        <source>Attributes</source>
+        <target>Attribute</target>
+      </trans-unit>
+      <trans-unit id="select_values.id" resname="select_values.id">
+        <source>ID</source>
+        <target>ID</target>
+      </trans-unit>
+      <trans-unit id="select_values.pid" resname="select_values.pid">
+        <source>PID</source>
+        <target>PID</target>
+      </trans-unit>
+      <trans-unit id="select_values.sorting" resname="select_values.sorting">
+        <source>Sorting</source>
+        <target>Sortierung</target>
+      </trans-unit>
+      <trans-unit id="select_values.tstamp" resname="select_values.tstamp">
+        <source>Timestamp</source>
+        <target>Zeitstempel</target>
+      </trans-unit>
+      <trans-unit id="select_values.vargroup" resname="select_values.vargroup">
+        <source>Vargroup</source>
+        <target>Variantengruppe</target>
+      </trans-unit>
+      <trans-unit id="select_values.varbase" resname="select_values.varbase">
+        <source>Varbase</source>
+        <target>Variantenbasis</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

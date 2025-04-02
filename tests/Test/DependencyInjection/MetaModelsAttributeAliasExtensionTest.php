@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_alias.
  *
- * (c) 2012-2021 The MetaModels team.
+ * (c) 2012-2024 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,12 +15,12 @@
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @author     Ingolf Steinhardt <info@e-spin.de>
  * @author     Sven Baumann <baumann.sv@gmail.com>
- * @copyright  2012-2021 The MetaModels team.
+ * @copyright  2012-2024 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_alias/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace MetaModels\AttributeAliasBundle\Test\DependencyInjection;
 
@@ -28,6 +28,7 @@ use MenAtWork\MultiColumnWizardBundle\Event\GetOptionsEvent;
 use MetaModels\AttributeAliasBundle\Attribute\AttributeTypeFactory;
 use MetaModels\AttributeAliasBundle\EventListener\GetOptionsListener;
 use MetaModels\AttributeAliasBundle\DependencyInjection\MetaModelsAttributeAliasExtension;
+use MetaModels\AttributeAliasBundle\Schema\DoctrineSchemaGenerator;
 use MetaModels\AttributeAliasBundle\Migration\AllowNullMigration;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -41,12 +42,7 @@ use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
  */
 class MetaModelsAttributeAliasExtensionTest extends TestCase
 {
-    /**
-     * Test that extension can be instantiated.
-     *
-     * @return void
-     */
-    public function testInstantiation()
+    public function testInstantiation(): void
     {
         $extension = new MetaModelsAttributeAliasExtension();
 
@@ -54,91 +50,37 @@ class MetaModelsAttributeAliasExtensionTest extends TestCase
         self::assertInstanceOf(ExtensionInterface::class, $extension);
     }
 
-    /**
-     * Test that the services are loaded.
-     *
-     * @return void
-     */
-    public function testRegistersServices()
+    public function testRegistersServices(): void
     {
-        $container = $this->getMockBuilder(ContainerBuilder::class)->getMock();
-
-        $container
-            ->expects(self::exactly(3))
-            ->method('setDefinition')
-            ->withConsecutive(
-                [
-                    AttributeTypeFactory::class,
-                    self::callback(
-                        function ($value) {
-                            /** @var Definition $value */
-                            $this->assertInstanceOf(Definition::class, $value);
-                            $this->assertCount(1, $value->getTag('metamodels.attribute_factory'));
-
-                            return true;
-                        }
-                    ),
-                ],
-                [
-                    self::anything(),
-                    self::anything(),
-                ],
-                [
-                    AllowNullMigration::class,
-                    self::callback(
-                        function ($value) {
-                            /** @var Definition $value */
-                            $this->assertInstanceOf(Definition::class, $value);
-                            $this->assertCount(1, $value->getTag('contao.migration'));
-
-                            return true;
-                        }
-                    )
-                ]
-            );
+        $container = new ContainerBuilder();
 
         $extension = new MetaModelsAttributeAliasExtension();
         $extension->load([], $container);
+
+        self::assertTrue($container->hasDefinition(AttributeTypeFactory::class));
+        $definition = $container->getDefinition(AttributeTypeFactory::class);
+        self::assertCount(1, $definition->getTag('metamodels.attribute_factory'));
+
+        self::assertTrue($container->hasDefinition(AllowNullMigration::class));
+        $definition = $container->getDefinition(AllowNullMigration::class);
+        self::assertCount(1, $definition->getTag('contao.migration'));
     }
 
-    /**
-    * Test that the event listener is registered.
-    *
-    * @return void
-    */
-    public function testEventListenersAreRegistered()
+    public function testEventListenersAreRegistered(): void
     {
-        $container = $this->getMockBuilder(ContainerBuilder::class)->getMock();
-
-        $container
-            ->expects(self::exactly(3))
-            ->method('setDefinition')
-            ->withConsecutive(
-                [
-                    self::anything(),
-                    self::anything(),
-                ],
-                [
-                    GetOptionsListener::class,
-                    self::callback(
-                        function ($value) {
-                            /** @var Definition $value */
-                            $this->assertInstanceOf(Definition::class, $value);
-                            $this->assertCount(1, $value->getTag('kernel.event_listener'));
-                            $this->assertEventListener(
-                                $value,
-                                GetOptionsEvent::NAME,
-                                'getOptions'
-                            );
-
-                            return true;
-                        }
-                    )
-                ]
-            );
+        $container = new ContainerBuilder();
 
         $extension = new MetaModelsAttributeAliasExtension();
         $extension->load([], $container);
+
+        self::assertTrue($container->hasDefinition(GetOptionsListener::class));
+        $definition = $container->getDefinition(GetOptionsListener::class);
+        self::assertCount(1, $definition->getTag('kernel.event_listener'));
+        $this->assertEventListener($definition, GetOptionsEvent::NAME, 'getOptions');
+
+        self::assertTrue($container->hasDefinition(DoctrineSchemaGenerator::class));
+        $definition = $container->getDefinition(DoctrineSchemaGenerator::class);
+        self::assertCount(1, $definition->getTag('metamodels.schema-generator.doctrine'));
     }
 
     /**
@@ -147,10 +89,8 @@ class MetaModelsAttributeAliasExtensionTest extends TestCase
      * @param Definition $definition The definition.
      * @param string     $eventName  The event name.
      * @param string     $methodName The method name.
-     *
-     * @return void
      */
-    private function assertEventListener(Definition $definition, $eventName, $methodName)
+    private function assertEventListener(Definition $definition, string $eventName, string $methodName): void
     {
         self::assertCount(1, $definition->getTag('kernel.event_listener'));
         self::assertArrayHasKey(0, $definition->getTag('kernel.event_listener'));
